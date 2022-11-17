@@ -1,15 +1,20 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
+import createPersistedstate from 'vuex-persistedstate';
 
-const store = createStore({
-  state() {
-    return {
-      count: 0,
-    };
+import user from './modules/user';
+import cart from './modules/cart';
+import cartgory from './modules/cartgory';
+
+export default createStore({
+  modules: {
+    user,
+    cart,
+    cartgory,
   },
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  plugins: [
+    createPersistedstate({
+      key: 'erabbit-project',
+      paths: ['user', 'cart'],
+    }),
+  ],
 });
-
-export default store;
