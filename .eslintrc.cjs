@@ -16,6 +16,7 @@ module.exports = {
       'warn',
       {
         singleQuote: true,
+        tabWidth: 2,
       },
     ],
   },
