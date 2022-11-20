@@ -1,10 +1,14 @@
-<script setup></script>
+<script setup>
+import ERabbitAppTopnav from '@/components/ERabbitAppTopnav.vue';
+import ERabbitAppHearder from '@/components/ERabbitAppHearder.vue';
+import ERabbitAppFooter from '@/components/ERabbitAppFooter.vue';
+</script>
 <template>
-  <nav>顶部通栏</nav>
-  <header>头部</header>
+  <ERabbitAppTopnav></ERabbitAppTopnav>
+  <ERabbitAppHearder></ERabbitAppHearder>
   <main>
     <!-- 二级路由 -->
     <RouterView></RouterView>
   </main>
-  <footer>底部</footer>
+  <ERabbitAppFooter></ERabbitAppFooter>
 </template>
