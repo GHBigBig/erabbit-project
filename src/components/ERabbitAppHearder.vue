@@ -1,19 +1,13 @@
+<script setup>
+import ERabbitAppHearderNav from './ERabbitAppHearderNav.vue';
+import ERabbitAppHeaderSticky from './ERabbitAppHeaderSticky.vue';
+</script>
 <template>
   <header class="app-header">
     <div class="container">
       <h1 class="logo"><RouterLink to="/">小兔鲜</RouterLink></h1>
-      <ul class="navs">
-        <li><RouterLink to="/">首页</RouterLink></li>
-        <li><a href="#">美食</a></li>
-        <li><a href="#">餐厨</a></li>
-        <li><a href="#">艺术</a></li>
-        <li><a href="#">电器</a></li>
-        <li><a href="#">居家</a></li>
-        <li><a href="#">洗护</a></li>
-        <li><a href="#">孕婴</a></li>
-        <li><a href="#">服装</a></li>
-        <li><a href="#">杂货</a></li>
-      </ul>
+      <ERabbitAppHearderNav></ERabbitAppHearderNav>
+
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="search" placeholder="搜一搜" />
@@ -25,6 +19,7 @@
         </a>
       </div>
     </div>
+    <ERabbitAppHeaderSticky></ERabbitAppHeaderSticky>
   </header>
 </template>
 
@@ -48,24 +43,6 @@
       background: url(../assets/images/logo.png) no-repeat center / contain;
     }
   }
-  .navs {
-    display: flex;
-    justify-content: space-evenly;
-    flex-grow: 1;
-
-    li {
-      a {
-        display: inline-block;
-        font-size: 16px;
-        height: 32px;
-        line-height: 32px;
-        &:hover {
-          color: @erColor;
-          border-bottom: 1px solid @erColor;
-        }
-      }
-    }
-  }
 
   .search {
     border-bottom: 1px solid #e7e7e7;
@@ -81,6 +58,7 @@
   }
   .cart {
     position: relative;
+    padding-left: 1rem;
     i {
       font-size: 1.5rem;
       line-height: 100%;

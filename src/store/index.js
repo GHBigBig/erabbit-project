@@ -3,13 +3,13 @@ import createPersistedstate from 'vuex-persistedstate';
 
 import user from './modules/user';
 import cart from './modules/cart';
-import cartgory from './modules/cartgory';
+import category from './modules/category';
 
 export default createStore({
   modules: {
     user,
     cart,
-    cartgory,
+    category,
   },
   plugins: [
     createPersistedstate({
