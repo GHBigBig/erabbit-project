@@ -41,7 +41,6 @@ const hide = (item) => store.commit('category/hide', item);
   display: flex;
   justify-content: space-evenly;
   flex-grow: 1;
-
   > li {
     > a {
       display: inline-block;
@@ -68,6 +67,7 @@ const hide = (item) => store.commit('category/hide', item);
   overflow: hidden;
   box-shadow: 0 0 5px #ccc;
   transition: all 0.2s 0.1s;
+  z-index: 999;
 
   &.open {
     height: 132px;

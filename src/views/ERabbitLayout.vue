@@ -10,7 +10,7 @@ store.dispatch('category/getCategory'); //获取分类数据
 <template>
   <ERabbitAppTopnav></ERabbitAppTopnav>
   <ERabbitAppHearder></ERabbitAppHearder>
-  <main style="height: 300px">
+  <main>
     <!-- 二级路由 -->
     <RouterView></RouterView>
   </main>
