@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: 'ERabbitSkeleton',
+};
+</script>
 <script setup>
 defineProps({
   bg: {

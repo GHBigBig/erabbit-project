@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: 'ERabbitMore',
+};
+</script>
 <script setup>
 const props = defineProps({
   path: {
@@ -7,13 +12,13 @@ const props = defineProps({
 });
 </script>
 <template>
-  <RouterLink :to="props.path" class="er-home">
+  <RouterLink :to="props.path" class="er-more">
     <span>查看全部</span>
     <i class="iconfont icon-angle-right"></i>
   </RouterLink>
 </template>
 <style scoped lang="less">
-.er-home {
+.er-more {
   margin-bottom: 2px;
   span {
     font-size: 16px;

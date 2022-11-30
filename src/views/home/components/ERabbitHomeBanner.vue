@@ -9,7 +9,7 @@ findBanner().then((data) => {
 </script>
 <template>
   <div class="home-banner">
-    <ERabiitCarousel :sliders="sliders"></ERabiitCarousel>
+    <ERabbitCarousel :sliders="sliders"></ERabbitCarousel>
   </div>
 </template>
 <style scoped lang="less">

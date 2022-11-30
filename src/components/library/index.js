@@ -1,21 +1,20 @@
-import ERabbitSkeleton from './ERabbitSkeleton.vue';
-import ERabiitCarousel from './ERabiitCarousel.vue';
-import ERabbitMore from './ERabbitMore.vue';
+const modules = import.meta.glob('./*.vue'); //从文件系统导入多个模块
 
 import defaultImg from '@/assets/images/200.png';
 
 export default {
   install(app) {
     //app 应用实例
-    app.component('ERabbitSkeleton', ERabbitSkeleton);
-    app.component('ERabiitCarousel', ERabiitCarousel);
-    app.component('ERabbitMore', ERabbitMore);
+    for (const path in modules) {
+      modules[path]().then((mod) => {
+        app.component(mod.default.name, mod.default);
+      });
+    }
 
     app.directive('lazyload', (el, binding) => {
       //在指令生命周期 mounted 和 update 触发
       const observer = new IntersectionObserver(
         ([{ isIntersecting }]) => {
-          console.log('img img img');
           if (isIntersecting) {
             observer.unobserve(el);
             el.onerror = () => {

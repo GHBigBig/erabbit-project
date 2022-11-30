@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Category from '@/views/category/ERabbitCategory.vue';
+import Category from '@/views/category/ERabbitCategoryIndex.vue';
 import CategorySub from '@/views/category/ERabbitCategorySub.vue';
 
 const Layout = () => import('@/views/ERabbitLayout.vue');

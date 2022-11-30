@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: 'ERabbitCarousel',
+};
+</script>
 <script setup>
 import { onUnmounted, ref, watch } from 'vue';
 
