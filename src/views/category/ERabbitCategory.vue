@@ -29,7 +29,11 @@ const getSubList = () => {
 };
 watch(
   () => route.params.id,
-  () => getSubList(),
+  (newVal) => {
+    if (newVal && `/category/${route.params.id}` === route.path) {
+      getSubList();
+    }
+  },
   {
     immediate: true,
   }
@@ -42,7 +46,9 @@ watch(
       <ERabbitBread>
         <ERabbitBreadItem to="/">首页</ERabbitBreadItem>
         <Transition name="fade-right" mode="out-in">
-          <ERabbitBreadItem>{{ topCategory.name }}</ERabbitBreadItem>
+          <ERabbitBreadItem :key="topCategory.id">
+            {{ topCategory.name }}
+          </ERabbitBreadItem>
         </Transition>
       </ERabbitBread>
       <!-- 轮播图 -->
@@ -56,7 +62,11 @@ watch(
         <ul>
           <li v-for="item in topCategory.children" :key="item.id">
             <a href="javascript:">
-              <img :src="item.picture" alt="二级分类照片" />
+              <img
+                :src="item.picture"
+                :data-src="item.picture"
+                alt="二级分类照片"
+              />
               <p>{{ item.name }}</p>
             </a>
           </li>

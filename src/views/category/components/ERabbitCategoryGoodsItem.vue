@@ -9,7 +9,11 @@ const props = defineProps({
 
 <template>
   <RouterLink to="/" class="goods-item">
-    <img :src="props.goods.picture" alt="分类商品图片" />
+    <img
+      :src="props.goods.picture"
+      :data-src="props.goods.picture"
+      alt="分类商品图片"
+    />
     <p class="name ellipsis">{{ props.goods.name }}</p>
     <p class="desc ellipsis">{{ props.goods.tag }}</p>
     <p class="price">&yen;{{ props.goods.price }}</p>

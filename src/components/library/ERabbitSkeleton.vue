@@ -7,7 +7,7 @@ export default {
 defineProps({
   bg: {
     type: String,
-    default: '#efefe',
+    default: '#efefef',
   },
   width: {
     type: String,

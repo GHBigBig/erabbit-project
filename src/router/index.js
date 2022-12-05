@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Category from '@/views/category/ERabbitCategoryIndex.vue';
-import CategorySub from '@/views/category/ERabbitCategorySub.vue';
 
 const Layout = () => import('@/views/ERabbitLayout.vue');
 const Home = () => import('@/views/home/ERabbitHomeIndex.vue');
+const Cateogry = () => import('@/views/category/ERabbitCategory.vue');
+const SubCategory = () => import('@/views/category/ERabbitSubCategory.vue');
 
 const routes = [
   {
@@ -11,8 +11,8 @@ const routes = [
     component: Layout,
     children: [
       { path: '/', component: Home },
-      { path: '/category/:id', component: Category },
-      { path: '/category/sub/:id', component: CategorySub },
+      { path: '/category/:id', component: Cateogry },
+      { path: '/category/sub/:id', component: SubCategory },
     ],
   },
 ];
@@ -20,6 +20,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior() {
+    return { top: 0, left: 0, behavior: 'smooth' };
+  },
 });
 
 export default router;

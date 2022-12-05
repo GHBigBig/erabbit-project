@@ -15,7 +15,7 @@ const hide = (item) => store.commit('category/hide', item);
     <li
       v-for="item of list"
       :key="item.id"
-      @mouseenter="show(item)"
+      @mousemove="show(item)"
       @mouseleave="hide(item)"
     >
       <RouterLink :to="`/category/${item.id}`" @click="hide(item)">
@@ -25,7 +25,7 @@ const hide = (item) => store.commit('category/hide', item);
         <ul>
           <li v-for="sub of item.children" :key="sub.id">
             <RouterLink :to="`/category/sub/${sub.id}`">
-              <img :data-src="sub.picture" alt="商品图片" />
+              <img :src="sub.picture" :data-src="sub.picture" alt="商品图片" />
               <p>{{ sub.name }}</p>
             </RouterLink>
           </li>
