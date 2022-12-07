@@ -27,6 +27,7 @@ const props = defineProps({
     <dl>
       <dt>配送</dt>
       <dd>至</dd>
+      <ERabbitCity></ERabbitCity>
     </dl>
     <dl>
       <dt>服务</dt>
