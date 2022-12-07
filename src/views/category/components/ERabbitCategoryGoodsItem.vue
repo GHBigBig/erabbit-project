@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <RouterLink to="/" class="goods-item">
+  <RouterLink :to="`/product/${goods.id}`" class="goods-item">
     <img
       :src="props.goods.picture"
       :data-src="props.goods.picture"

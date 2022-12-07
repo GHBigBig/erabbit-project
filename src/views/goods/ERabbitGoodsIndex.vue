@@ -1,16 +1,41 @@
 <script setup>
+import { findGoods } from '@/api/product';
+import { nextTick, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import ERabbitGoodsRecommend from './components/ERabbitGoodsRecommend.vue';
 
+const goods = ref(null);
+const route = useRoute();
+
+watch(
+  () => route.params.id,
+  (newVal) => {
+    if (newVal && `/product/${newVal}` === route.path) {
+      findGoods(route.params.id).then((data) => {
+        goods.value = null; //结合 v-if 使组件可以重新销毁和创建
+        nextTick(() => {
+          goods.value = data.result;
+        });
+        goods.value = data;
+      });
+    }
+  },
+  { immediate: true }
+);
 </script>
 <template>
-  <div class="er-goods-page">
+  <div class="er-goods-page" v-if="goods">
     <div class="container">
       <!-- 面包屑 -->
       <ERabbitBread>
-        <ERabbitBreadItem></ERabbitBreadItem>
-        <ERabbitBreadItem></ERabbitBreadItem>
-        <ERabbitBreadItem></ERabbitBreadItem>
-        <ERabbitBreadItem></ERabbitBreadItem>
+        <ERabbitBreadItem to="/">首页</ERabbitBreadItem>
+        <ERabbitBreadItem :to="`/category/${goods.categories[0].id}`">
+          {{ goods.categories[0].name }}
+        </ERabbitBreadItem>
+        <ERabbitBreadItem :to="`/category/sub/${goods.categories[1].id}`">
+          {{ goods.categories[1].name }}
+        </ERabbitBreadItem>
+        <ERabbitBreadItem>{{ goods.name }}</ERabbitBreadItem>
       </ERabbitBread>
       <!-- 商品信息 -->
       <div class="goods-info"></div>
