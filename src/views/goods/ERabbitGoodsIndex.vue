@@ -38,7 +38,10 @@ watch(
         <ERabbitBreadItem>{{ goods.name }}</ERabbitBreadItem>
       </ERabbitBread>
       <!-- 商品信息 -->
-      <div class="goods-info"></div>
+      <div class="goods-info">
+        <div class="media"></div>
+        <div class="spec"></div>
+      </div>
       <!-- 推荐商品 -->
       <ERabbitGoodsRecommend></ERabbitGoodsRecommend>
       <div class="goods-footer">
@@ -54,4 +57,20 @@ watch(
     </div>
   </div>
 </template>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.goods-info {
+  min-height: 600px;
+  display: flex;
+  background-color: #fff;
+  .media {
+    width: 580px;
+    height: 600px;
+    padding: 30px 50px;
+  }
+  .spec {
+    flex: 1;
+    padding: 30px;
+    padding-left: 0;
+  }
+}
+</style>
