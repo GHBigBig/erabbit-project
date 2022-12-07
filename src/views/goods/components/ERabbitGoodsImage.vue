@@ -1,3 +1,8 @@
+<script>
+export default {
+  name: 'ERabbitGoodsImage',
+};
+</script>
 <script setup>
 import { reactive, ref, watch } from 'vue';
 import { useMouseInElement } from '@vueuse/core';

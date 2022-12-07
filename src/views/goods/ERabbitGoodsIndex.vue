@@ -3,7 +3,9 @@ import { findGoods } from '@/api/product';
 import { nextTick, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ERabbitGoodsImage from './components/ERabbitGoodsImage.vue';
+import ERabbitGoodsName from './components/ERabbitGoodsName.vue';
 import ERabbitGoodsRecommend from './components/ERabbitGoodsRecommend.vue';
+import ERabbitGoodsSales from './components/ERabbitGoodsSales.vue';
 
 const goods = ref(null);
 const route = useRoute();
@@ -42,8 +44,11 @@ watch(
       <div class="goods-info">
         <div class="media">
           <ERabbitGoodsImage :images="goods.mainPictures"></ERabbitGoodsImage>
+          <ERabbitGoodsSales :goods="goods"></ERabbitGoodsSales>
         </div>
-        <div class="spec"></div>
+        <div class="spec">
+          <ERabbitGoodsName :goods="goods"></ERabbitGoodsName>
+        </div>
       </div>
       <!-- 推荐商品 -->
       <ERabbitGoodsRecommend></ERabbitGoodsRecommend>
