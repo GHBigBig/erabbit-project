@@ -5,12 +5,35 @@ export default {
 </script>
 
 <script setup>
+import { ref } from 'vue';
+
 const props = defineProps({
   goods: {
     type: Object,
     default: () => {},
   },
 });
+
+//默认地址
+const address = ref({
+  provinceCode: '110000',
+  cityCode: '119900',
+  countyCode: '110101',
+  fullLocation: '北京市 市辖区 东城区',
+});
+
+//商品数据中含默认地址
+if (props.goods.userAddress) {
+  const defaultAddr = props.goods.userAddress.find(
+    (addr) => addr.isDefault === 1
+  );
+  if (defaultAddr) {
+    address.value.provinceCode = defaultAddr.provinceCode;
+    address.value.cityCode = defaultAddr.cityCode;
+    address.value.countyCode = defaultAddr.countyCode;
+    address.value.fullLocation = defaultAddr.fullLocation;
+  }
+}
 </script>
 <template>
   <p class="goods-name">{{ props.goods.name }}</p>
@@ -27,7 +50,7 @@ const props = defineProps({
     <dl>
       <dt>配送</dt>
       <dd>至</dd>
-      <ERabbitCity></ERabbitCity>
+      <ERabbitCity v-model:address="address"></ERabbitCity>
     </dl>
     <dl>
       <dt>服务</dt>

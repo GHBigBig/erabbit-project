@@ -6,13 +6,22 @@ export default {
 <script setup>
 import { onClickOutside } from '@vueuse/core';
 import axios from 'axios';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
-const openState = ref(false);
-const optionDiv = ref(null);
+const props = defineProps({
+  address: {
+    type: Object,
+    default: () => {},
+  },
+});
+const emits = defineEmits(['update:address']);
 
+const openState = ref(false); //城市列表是否展示
+const optionDiv = ref(null); //城市组件元素元素 dom
+const addressResult = ref(props.address); //存储地址信息，使用 prop address 初始化，对象prop内部的值仍可以被更改
+
+//控制城市列表展示
 function toggleState() {
-  //控制城市列表展示
   openState.value = !openState.value;
   console.log('openState.value ', openState.value);
   if (openState.value) {
@@ -21,6 +30,7 @@ function toggleState() {
   }
 }
 
+//点击城市组件外 关闭城市展示
 onClickOutside(optionDiv, () => {
   openState.value = false;
 });
@@ -46,31 +56,61 @@ const getCityData = () => {
     }
   });
 };
-const loading = ref(false);
-const cityData = ref([]);
+const loading = ref(false); //城市数据加载状态
+const cityData = ref([]); //城市数据
 const open = () => {
   loading.value = true;
   getCityData().then((res) => {
     cityData.value = res;
+    currList.value = res;
     loading.value = false;
   });
 };
-const currList = computed(() => {
-  const currList = cityData.value;
-  return currList;
-});
+//计算得到当前界面显示的行政区
+const currList = ref([]);
+
+const checkAddress = (location) => {
+  switch (location.level) {
+    case 0:
+      addressResult.value.provinceCode = location.code;
+      addressResult.value.provinceName = location.name;
+      currList.value = location.areaList;
+      break;
+    case 1:
+      addressResult.value.cityCode = location.code;
+      addressResult.value.cityName = location.name;
+      currList.value = location.areaList;
+      break;
+    case 2:
+      addressResult.value.countyCode = location.code;
+      addressResult.value.countyName = location.name;
+      addressResult.value.fullLocation = `${addressResult.value.provinceName} ${addressResult.value.cityName} ${addressResult.value.countyName}`;
+      emits('update:address', addressResult);
+      openState.value = false;
+      break;
+    default:
+      break;
+  }
+};
 </script>
 <template>
   <div class="er-city" ref="optionDiv">
     <div class="select" @click="toggleState()">
-      <span class="placeholder">请选择配送地址</span>
-      <span class="value"></span>
+      <span v-if="!addressResult.fullLocation" class="placeholder">
+        请选择配送地址
+      </span>
+      <span v-else class="value">{{ addressResult.fullLocation }}</span>
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div v-if="openState" class="option">
       <div v-if="!cityData?.length" class="loading"></div>
       <template v-else>
-        <span class="ellipsis" v-for="item in currList" :key="item.code">
+        <span
+          class="ellipsis"
+          v-for="item in currList"
+          :key="item.code"
+          @click="checkAddress(item)"
+        >
           {{ item.name }}
         </span>
       </template>
