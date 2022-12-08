@@ -30,7 +30,7 @@ const props = defineProps({
     </li>
     <li>
       <p>品牌信息</p>
-      <p>苏宁电器</p>
+      <p>{{ props.goods.brand.name }}</p>
       <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
     </li>
   </ul>

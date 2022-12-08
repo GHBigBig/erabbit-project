@@ -6,6 +6,7 @@ import ERabbitGoodsImage from './components/ERabbitGoodsImage.vue';
 import ERabbitGoodsName from './components/ERabbitGoodsName.vue';
 import ERabbitGoodsRecommend from './components/ERabbitGoodsRecommend.vue';
 import ERabbitGoodsSales from './components/ERabbitGoodsSales.vue';
+import ERabbitGoodsSKU from './components/ERabbitGoodsSKU.vue';
 
 const goods = ref(null);
 const route = useRoute();
@@ -48,6 +49,7 @@ watch(
         </div>
         <div class="spec">
           <ERabbitGoodsName :goods="goods"></ERabbitGoodsName>
+          <ERabbitGoodsSKU :goods="goods"></ERabbitGoodsSKU>
         </div>
       </div>
       <!-- 推荐商品 -->
