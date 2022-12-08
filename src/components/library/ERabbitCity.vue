@@ -5,17 +5,59 @@ export default {
 </script>
 <script setup>
 import { onClickOutside } from '@vueuse/core';
-import { ref } from 'vue';
+import axios from 'axios';
+import { computed, ref } from 'vue';
 
 const openState = ref(false);
 const optionDiv = ref(null);
 
 function toggleState() {
+  //控制城市列表展示
   openState.value = !openState.value;
+  console.log('openState.value ', openState.value);
+  if (openState.value) {
+    //打开城市列表就要获取数据
+    open();
+  }
 }
 
 onClickOutside(optionDiv, () => {
   openState.value = false;
+});
+
+const getCityData = () => {
+  //获取城市数据
+  return new Promise((resolve, reject) => {
+    if (window.cityData) {
+      //城市数据的存储位置
+      resolve(window.cityData);
+    } else {
+      const url =
+        'https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json';
+      axios
+        .get(url)
+        .then((res) => {
+          window.cityData = res.data;
+          resolve(window.cityData);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    }
+  });
+};
+const loading = ref(false);
+const cityData = ref([]);
+const open = () => {
+  loading.value = true;
+  getCityData().then((res) => {
+    cityData.value = res;
+    loading.value = false;
+  });
+};
+const currList = computed(() => {
+  const currList = cityData.value;
+  return currList;
 });
 </script>
 <template>
@@ -26,7 +68,12 @@ onClickOutside(optionDiv, () => {
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div v-if="openState" class="option">
-      <span v-for="i in 24" :key="i">北京</span>
+      <div v-if="!cityData?.length" class="loading"></div>
+      <template v-else>
+        <span class="ellipsis" v-for="item in currList" :key="item.code">
+          {{ item.name }}
+        </span>
+      </template>
     </div>
   </div>
 </template>
@@ -80,6 +127,11 @@ onClickOutside(optionDiv, () => {
       &:hover {
         background: #f5f5f5;
       }
+    }
+    .loading {
+      height: 290px;
+      width: 100%;
+      background: url(../../assets/images/loadding.gif) no-repeat center;
     }
   }
 }
