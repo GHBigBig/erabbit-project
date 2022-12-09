@@ -4,6 +4,9 @@ export default {
 };
 </script>
 <script setup>
+import bwPowerSet from '@/vender/bwPowerSet';
+import { computed } from 'vue';
+
 const props = defineProps({
   goods: {
     type: Object,
@@ -19,6 +22,29 @@ const clickSpecs = (item, val) => {
     val.selected = true;
   }
 };
+
+const spliter = '★';
+//生成sku路径词典
+const producePathMap = (skus) => {
+  const pathMap = {};
+  skus.forEach((sku) => {
+    if (sku.inventory) {
+      const specArr = sku.specs.map((spec) => spec.valueName);
+
+      const specSet = bwPowerSet(specArr);
+      specSet.forEach((set) => {
+        if (pathMap[set.join(spliter)]) {
+          pathMap[set.join(spliter)].push(sku.id);
+        } else {
+          pathMap[set.join(spliter)] = [sku.id];
+        }
+      });
+    }
+  });
+  return pathMap;
+};
+
+const pathMap = producePathMap(props.goods.skus);
 </script>
 <template>
   <div class="goods-sku">
