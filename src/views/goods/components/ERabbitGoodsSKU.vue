@@ -14,15 +14,6 @@ const props = defineProps({
   },
 });
 
-const clickSpecs = (item, val) => {
-  if (val.selected) {
-    val.selected = false;
-  } else {
-    item.values.forEach((bv) => void (bv.selected = false));
-    val.selected = true;
-  }
-};
-
 const spliter = '★';
 //生成sku路径词典
 const producePathMap = (skus) => {
@@ -44,7 +35,54 @@ const producePathMap = (skus) => {
   return pathMap;
 };
 
-const pathMap = producePathMap(props.goods.skus);
+const pathMap = computed(() => producePathMap(props.goods.skus)); //路径字典
+/**
+ * 获取用户选择的规格
+ * @param {Object} specs 商品规格
+ */
+const getSelectArr = (specs) => {
+  const selectedArr = [];
+  specs.forEach((spec) => {
+    const selectedVal = spec.values.find((val) => val.selected);
+    selectedArr.push(selectedVal ? selectedVal.name : undefined);
+  });
+  return selectedArr;
+};
+
+const updateDisabledStatus = (specs, pathMap) => {
+  specs?.forEach((spec, i) => {
+    const selectedArr = getSelectArr(specs);
+    spec.values.forEach((val) => {
+      if (val.selected) {
+        return;
+      } else {
+        selectedArr[i] = val.name;
+
+        val.disabled =
+          !pathMap.value[selectedArr.filter((v) => v).join(spliter)];
+      }
+    });
+  });
+};
+updateDisabledStatus(props.goods.specs, pathMap);
+
+/**
+ * 选中商品的 spec 某一属性时进行标记
+ * @param {Object} item 商品 spec
+ * @param {Object} val 商品 spec 具体的一个属性
+ */
+const clickSpecs = (item, val) => {
+  if (val.disabled) {
+    return;
+  }
+  if (val.selected) {
+    val.selected = false;
+  } else {
+    item.values.forEach((bv) => void (bv.selected = false));
+    val.selected = true;
+  }
+  updateDisabledStatus(props.goods.specs, pathMap);
+};
 </script>
 <template>
   <div class="goods-sku">
@@ -54,14 +92,14 @@ const pathMap = producePathMap(props.goods.skus);
         <template v-for="item in spec.values" :key="item.name">
           <img
             v-if="item.picture"
-            :class="{ selected: item.selected }"
+            :class="{ selected: item.selected, disabled: item.disabled }"
             :src="item.picture"
             :alt="item.name"
             @click="clickSpecs(spec, item)"
           />
           <span
             v-else
-            class="{selected:item.selected }"
+            :class="{ selected: item.selected, disabled: item.disabled }"
             @click="clickSpecs(spec, item)"
           >
             {{ item.name }}
