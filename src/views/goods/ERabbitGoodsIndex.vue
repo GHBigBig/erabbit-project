@@ -26,6 +26,14 @@ watch(
   },
   { immediate: true }
 );
+
+const changeSku = (sku) => {
+  if (sku.skuid) {
+    goods.value.price = sku.price;
+    goods.value.oldPrice = sku.oldPrice;
+    goods.value.inventory = sku.inventory;
+  }
+};
 </script>
 <template>
   <div class="er-goods-page" v-if="goods">
@@ -49,7 +57,7 @@ watch(
         </div>
         <div class="spec">
           <ERabbitGoodsName :goods="goods"></ERabbitGoodsName>
-          <ERabbitGoodsSKU :goods="goods"></ERabbitGoodsSKU>
+          <ERabbitGoodsSKU :goods="goods" @change="changeSku"></ERabbitGoodsSKU>
         </div>
       </div>
       <!-- 推荐商品 -->

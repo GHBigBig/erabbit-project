@@ -12,7 +12,25 @@ const props = defineProps({
     type: Object,
     default: () => ({ specs: [], sku: [] }),
   },
+  skuid: {
+    type: String,
+    default: '',
+  },
 });
+const emits = defineEmits(['change']);
+
+//根据传入的 skuId 来选中
+const initSelectedStatus = (goods, skuId) => {
+  const sku = goods.skus.find((sku) => sku.id === skuId);
+  if (sku) {
+    goods.specs.forEach((spec, i) => {
+      spec.values.forEach((val) => {
+        val.selected = val.valueName === sku.specs[i].valueName;
+      });
+    });
+  }
+};
+initSelectedStatus(props.goods, props.skuid);
 
 const spliter = '★';
 //生成sku路径词典
@@ -72,6 +90,7 @@ updateDisabledStatus(props.goods.specs, pathMap);
  * @param {Object} val 商品 spec 具体的一个属性
  */
 const clickSpecs = (item, val) => {
+  //选中处理逻辑
   if (val.disabled) {
     return;
   }
@@ -81,7 +100,27 @@ const clickSpecs = (item, val) => {
     item.values.forEach((bv) => void (bv.selected = false));
     val.selected = true;
   }
+  //更新商品的禁用状态
   updateDisabledStatus(props.goods.specs, pathMap);
+  //触发 change 事件将 sku 数据传出去
+  const selectedArr = getSelectArr(props.goods.specs).filter((v) => v);
+  //判断是一下是否完成了商品的规格的选择
+  if (selectedArr.length === props.goods.specs.length) {
+    const skuIds = pathMap[selectedArr.join(spliter)];
+    const sku = props.goods.skus.find((sku) => sku.id === skuIds[0]);
+    emits('change', {
+      skuId: sku.id,
+      price: sku.price,
+      oldPrice: sku.oldPrice,
+      inventory: sku.inventory,
+      specsText: sku.specs.reduce(
+        (p, n) => `${p} ${n.name} ${n.valueName}`,
+        ''
+      ),
+    });
+  } else {
+    emits('change', '');
+  }
 };
 </script>
 <template>
