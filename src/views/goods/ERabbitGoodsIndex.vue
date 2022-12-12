@@ -27,6 +27,7 @@ watch(
   { immediate: true }
 );
 
+//用户选择的规格
 const changeSku = (sku) => {
   if (sku.skuid) {
     goods.value.price = sku.price;
@@ -34,6 +35,8 @@ const changeSku = (sku) => {
     goods.value.inventory = sku.inventory;
   }
 };
+
+const num = ref(1); //购买数量
 </script>
 <template>
   <div class="er-goods-page" v-if="goods">
@@ -58,6 +61,11 @@ const changeSku = (sku) => {
         <div class="spec">
           <ERabbitGoodsName :goods="goods"></ERabbitGoodsName>
           <ERabbitGoodsSKU :goods="goods" @change="changeSku"></ERabbitGoodsSKU>
+          <ERabbitNumerBox
+            v-model="num"
+            label="数量"
+            :max="goods.inventory"
+          ></ERabbitNumerBox>
         </div>
       </div>
       <!-- 推荐商品 -->
