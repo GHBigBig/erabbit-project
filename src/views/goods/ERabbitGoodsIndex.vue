@@ -72,7 +72,7 @@ const num = ref(1); //购买数量
         </div>
       </div>
       <!-- 推荐商品 -->
-      <ERabbitGoodsRecommend></ERabbitGoodsRecommend>
+      <ERabbitGoodsRecommend :goods-id="goods.id"></ERabbitGoodsRecommend>
       <div class="goods-footer">
         <!-- 商品详情 -->
         <div class="goods-article">

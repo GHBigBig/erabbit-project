@@ -21,4 +21,13 @@ findBanner().then((data) => {
   top: 0;
   z-index: 98;
 }
+
+.er-carousel {
+  :deep(.carousel-btn.prev) {
+    left: 270px;
+  }
+  :deep(.carousel-btn.indicator) {
+    padding-left: 250px;
+  }
+}
 </style>

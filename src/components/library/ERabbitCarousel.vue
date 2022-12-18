@@ -70,16 +70,27 @@ onUnmounted(() => clearInterval(timer));
         :key="item.id"
         :class="{ fade: index === i }"
       >
-        <RouterLink to="/">
+        <RouterLink v-if="item.imgUrl" :to="item.imgUrl">
           <img :src="item.imgUrl" alt="商品图片" />
         </RouterLink>
+        <div v-else class="slider">
+          <RouterLink
+            v-for="goods in item"
+            :key="goods.id"
+            :to="`/product/${goods.id}`"
+          >
+            <img :src="goods.picture" alt="商品图片" />
+            <p class="name ellipsis">{{ goods.name }}</p>
+            <p class="price">&yen;{{ goods.price }}</p>
+          </RouterLink>
+        </div>
       </li>
-      <a href="javascript:;" class="carousel-btn prev" @click="toggle(-1)"
-        ><i class="iconfont icon-angle-left"></i
-      ></a>
-      <a href="javascript:;" class="carousel-btn next" @click="toggle(1)"
-        ><i class="iconfont icon-angle-right"></i
-      ></a>
+      <a href="javascript:;" class="carousel-btn prev" @click="toggle(-1)">
+        <i class="iconfont icon-angle-left"></i>
+      </a>
+      <a href="javascript:;" class="carousel-btn next" @click="toggle(1)">
+        <i class="iconfont icon-angle-right"></i>
+      </a>
       <div class="carousel-indicator">
         <span
           v-for="(item, i) in props.sliders"
@@ -126,6 +137,7 @@ onUnmounted(() => clearInterval(timer));
       bottom: 20px;
       width: 100%;
       text-align: center;
+      z-index: 2;
       span {
         display: inline-block;
         width: 12px;
@@ -162,17 +174,36 @@ onUnmounted(() => clearInterval(timer));
       }
     }
   }
+
   &:hover {
     .carousel-btn {
       opacity: 1;
     }
   }
 
-  :deep(.carousel-btn.prev) {
-    left: 270px;
-  }
-  :deep(.carousel-btn.indicator) {
-    padding-left: 250px;
+  .slider {
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-around;
+    > a {
+      width: 240px;
+      text-align: center;
+      img {
+        width: 230px !important;
+        height: 230px !important;
+        padding: 20px;
+      }
+      .name {
+        padding: 0 40px;
+        font-size: 20px;
+        color: #666;
+      }
+      .price {
+        margin-top: 15px;
+        font-size: 16px;
+        color: @priceColor;
+      }
+    }
   }
 }
 </style>
