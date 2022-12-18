@@ -66,6 +66,9 @@ const num = ref(1); //购买数量
             label="数量"
             :max="goods.inventory"
           ></ERabbitNumerBox>
+          <ERabbitButton type="primary" style="margin-top: 20px">
+            加入购物车
+          </ERabbitButton>
         </div>
       </div>
       <!-- 推荐商品 -->
