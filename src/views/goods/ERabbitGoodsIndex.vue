@@ -2,6 +2,7 @@
 import { findGoods } from '@/api/product';
 import { nextTick, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import ERabbitGoodsHot from './components/ERabbitGoodsHot.vue';
 import ERabbitGoodsImage from './components/ERabbitGoodsImage.vue';
 import ERabbitGoodsName from './components/ERabbitGoodsName.vue';
 import ERabbitGoodsRecommend from './components/ERabbitGoodsRecommend.vue';
@@ -82,7 +83,10 @@ const num = ref(1); //购买数量
           <div class="goods-warn"></div>
         </div>
         <!-- 热榜 -->
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+          <ERabbitGoodsHot :type="1"></ERabbitGoodsHot>
+          <ERabbitGoodsHot :type="2"></ERabbitGoodsHot>
+        </div>
       </div>
     </div>
   </div>
@@ -101,6 +105,19 @@ const num = ref(1); //购买数量
     flex: 1;
     padding: 30px;
     padding-left: 0;
+  }
+}
+
+.goods-footer {
+  display: flex;
+  margin-top: 20px;
+  .goods-article {
+    width: 940px;
+    margin-right: 20px;
+  }
+  .goods-aside {
+    width: 280px;
+    min-height: 1000px;
   }
 }
 </style>
