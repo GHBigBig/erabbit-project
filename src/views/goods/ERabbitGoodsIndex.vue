@@ -7,6 +7,7 @@ import ERabbitGoodsName from './components/ERabbitGoodsName.vue';
 import ERabbitGoodsRecommend from './components/ERabbitGoodsRecommend.vue';
 import ERabbitGoodsSales from './components/ERabbitGoodsSales.vue';
 import ERabbitGoodsSKU from './components/ERabbitGoodsSKU.vue';
+import ERabbitGoodsTabs from './components/ERabbitGoodsTabs.vue';
 
 const goods = ref(null);
 const route = useRoute();
@@ -77,7 +78,7 @@ const num = ref(1); //购买数量
         <!-- 商品详情 -->
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tab"></div>
+          <ERabbitGoodsTabs></ERabbitGoodsTabs>
           <div class="goods-warn"></div>
         </div>
         <!-- 热榜 -->
