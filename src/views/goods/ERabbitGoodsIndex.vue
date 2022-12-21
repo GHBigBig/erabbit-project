@@ -1,6 +1,6 @@
 <script setup>
 import { findGoods } from '@/api/product';
-import { nextTick, ref, watch } from 'vue';
+import { nextTick, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ERabbitGoodsHot from './components/ERabbitGoodsHot.vue';
 import ERabbitGoodsImage from './components/ERabbitGoodsImage.vue';
@@ -12,6 +12,8 @@ import ERabbitGoodsTabs from './components/ERabbitGoodsTabs.vue';
 
 const goods = ref(null);
 const route = useRoute();
+
+provide('goods', goods);
 
 watch(
   () => route.params.id,

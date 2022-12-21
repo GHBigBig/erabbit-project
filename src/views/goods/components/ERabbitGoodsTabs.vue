@@ -4,9 +4,11 @@ export default {
 };
 </script>
 <script setup>
-import { shallowRef } from 'vue';
+import { inject, shallowRef } from 'vue';
 import ERabbitGoodsComment from './ERabbitGoodsComment.vue';
 import ERabbitGoodsDetail from './ERabbitGoodsDetail.vue';
+
+const goods = inject('goods');
 
 const activeComponent = shallowRef(ERabbitGoodsDetail);
 </script>
@@ -24,7 +26,7 @@ const activeComponent = shallowRef(ERabbitGoodsDetail);
         href="javascript:;"
         :class="{ active: activeComponent.name === 'ERabbitGoodsComment' }"
         @click="activeComponent = ERabbitGoodsComment"
-        >商品评价<span>(500+)</span></a
+        >商品评价<span>({{ goods.commentCount }})</span></a
       >
     </nav>
     <component :is="activeComponent"></component>
