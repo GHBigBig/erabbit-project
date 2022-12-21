@@ -21,4 +21,13 @@ const findHotGoods = ({ id, type, limit = 3 }) => {
   return request('/goods/hot', 'get', { id, type, limit });
 };
 
-export { findRelGoods, findHotGoods };
+/**
+ * 获取商品的评价统计信息
+ * @param {String} id - 商品 ID
+ * @returns
+ */
+const findCommentInfoByGoods = (id) => {
+  return request(`/goods/${id}/evaluate`, 'get');
+};
+
+export { findRelGoods, findHotGoods, findCommentInfoByGoods };

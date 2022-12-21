@@ -20,16 +20,19 @@ const activeComponent = shallowRef(ERabbitGoodsDetail);
         href="javascript:;"
         :class="{ active: activeComponent.name === 'ERabbitGoodsDetail' }"
         @click="activeComponent = ERabbitGoodsDetail"
-        >商品详情</a
       >
+        商品详情
+      </a>
       <a
         href="javascript:;"
         :class="{ active: activeComponent.name === 'ERabbitGoodsComment' }"
         @click="activeComponent = ERabbitGoodsComment"
-        >商品评价<span>({{ goods.commentCount }})</span></a
       >
+        商品评价
+        <span>({{ goods.commentCount }})</span>
+      </a>
     </nav>
-    <component :is="activeComponent"></component>
+    <component :is="activeComponent" :goods="goods"></component>
   </div>
 </template>
 
