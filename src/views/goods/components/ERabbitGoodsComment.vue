@@ -5,8 +5,8 @@ export default {
 </script>
 
 <script setup>
-import { findCommentInfoByGoods } from '@/api/goods';
-import { ref } from 'vue';
+import { findCommentInfoByGoods, findCommentListByGoods } from '@/api/goods';
+import { reactive, ref, watch } from 'vue';
 
 const props = defineProps({
   goods: {
@@ -33,6 +33,59 @@ const getCommentInfo = () => {
   });
 };
 getCommentInfo();
+
+//筛选条件
+const reqParams = reactive({
+  page: 1,
+  pageSize: 10,
+  hasPicture: null,
+  tag: null,
+  sortField: null,
+});
+const changeSort = (type) => {
+  reqParams.sortField = type;
+  reqParams.page = 1;
+};
+const changeTag = (i) => {
+  currTagIndex.value = i;
+  //标签条件
+  const currTag = commentInfo.value.tags[i];
+  if (currTag.type === 'all') {
+    //查看全部
+    reqParams.hasPicture = false;
+    reqParams.tag = null;
+  } else if (currTag.type === 'img') {
+    //查看有图
+    reqParams.hasPicture = true;
+    reqParams.tag = null;
+  } else {
+    //查看标签分类
+    reqParams.hasPicture = false;
+    reqParams.tag = currTag.title;
+  }
+  reqParams.page = 1;
+};
+
+//初始化或者筛选条件改变后，获取列表数据
+const commentList = ref([]);
+watch(
+  reqParams,
+  async () => {
+    const data = await findCommentListByGoods(props.goods.id, reqParams);
+    commentList.value = data.result.items;
+  },
+  { immediate: true }
+);
+
+//处理规格
+const formatSpecs = (specs) => {
+  return specs.reduce((p, c) => `${p} ${c.name}: ${c.nameValue}`, '').trim();
+};
+
+//处理用户昵称
+const formatNickname = (nickname) => {
+  return nickname.substr(0, 1) + '****' + nickname.substr(-1);
+};
 </script>
 
 <template>
@@ -40,11 +93,11 @@ getCommentInfo();
     <div class="header">
       <div class="data">
         <p>
-          <span>{{ commentInfo.salesCount }}</span>
+          <span>{{ commentInfo?.salesCount }}</span>
           <span>人购买</span>
         </p>
         <p>
-          <span>{{ commentInfo.praisePercent }}</span>
+          <span>{{ commentInfo?.praisePercent }}</span>
           <span>好评率</span>
         </p>
       </div>
@@ -53,10 +106,10 @@ getCommentInfo();
         <div class="dd">
           <a
             href="javascript:;"
-            v-for="(item, i) in commentInfo.tags"
+            v-for="(item, i) in commentInfo?.tags"
             :key="item.title"
             :class="{ active: currTagIndex === i }"
-            @click="currTagIndex = i"
+            @click="changeTag(i)"
           >
             {{ item.title }} {{ item.tagCount }}
           </a>
@@ -65,11 +118,55 @@ getCommentInfo();
     </div>
     <div class="sort">
       <span>排序：</span>
-      <a href="javascript:;" class="active">默认</a>
-      <a href="javascript:;">最新</a>
-      <a href="javascript:;">最热</a>
+      <a
+        href="javascript:;"
+        :class="{ active: reqParams.sortField === null }"
+        @click="changeSort(null)"
+      >
+        默认
+      </a>
+      <a
+        href="javascript:;"
+        :class="{ active: reqParams.sortField === 'praiseCount' }"
+        @click="changeSort('praiseCount')"
+      >
+        最新
+      </a>
+      <a
+        href="javascript:;"
+        :class="{ active: reqParams.sortField === 'createTime' }"
+        @click="changeSort('createTime')"
+      >
+        最热
+      </a>
     </div>
-    <div class="list"></div>
+    <div class="list">
+      <div class="item" v-for="item in commentList" :key="item.id">
+        <div class="user">
+          <img :src="item.member.avatar" alt="用户头像照片" />
+          <span>{{ formatNickname(item.member.nickname) }}</span>
+        </div>
+        <div class="body">
+          <div class="score">
+            <i v-for="i in item.score" :key="i" class="iconfont icon-wjx01"></i>
+            <i
+              v-for="i in 5 - item.score"
+              :key="item.score + i"
+              class="iconfont icon-wjx02"
+            ></i>
+            <span class="attr">{{ formatSpecs(item.orderInfo.specs) }}</span>
+          </div>
+          <div class="text">{{ item.content }}</div>
+          <div class="time">
+            <span>{{ item.createTime }}</span>
+            <span class="zan">
+              <i class="iconfont icon-dianzan"></i>
+              {{ item.praiseCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -151,6 +248,51 @@ getCommentInfo();
       &.active,
       &:hover {
         color: @erColor;
+      }
+    }
+  }
+  .list {
+    padding: 0 20px;
+    .item {
+      padding: 25px 10px;
+      border-bottom: 1px solid #f5f5f5;
+      display: flex;
+      .user {
+        width: 160px;
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        span {
+          padding-left: 10px;
+          color: #666;
+        }
+      }
+      .body {
+        flex: 1;
+        .score {
+          line-height: 40px;
+          .iconfont {
+            color: #ff9240;
+            padding-right: 3px;
+          }
+          .attr {
+            padding-left: 10px;
+            color: #666;
+          }
+        }
+        .text {
+          color: #666;
+          line-height: 24px;
+        }
+        .time {
+          color: #999;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 5px;
+        }
       }
     }
   }

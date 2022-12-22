@@ -30,4 +30,23 @@ const findCommentInfoByGoods = (id) => {
   return request(`/goods/${id}/evaluate`, 'get');
 };
 
-export { findRelGoods, findHotGoods, findCommentInfoByGoods };
+/**
+ * 查询商品评价列表
+ * @param {String} id 商品 ID
+ * @param {Object} reqParams 查询条件
+ * @returns Promise
+ */
+const findCommentListByGoods = async (id, reqParams) => {
+  return request(
+    `https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate/page`,
+    'get',
+    reqParams
+  );
+};
+
+export {
+  findRelGoods,
+  findHotGoods,
+  findCommentInfoByGoods,
+  findCommentListByGoods,
+};
