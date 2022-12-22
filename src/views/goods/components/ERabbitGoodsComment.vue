@@ -7,6 +7,7 @@ export default {
 <script setup>
 import { findCommentInfoByGoods, findCommentListByGoods } from '@/api/goods';
 import { reactive, ref, watch } from 'vue';
+import ERabbitGoodsCommentImage from './ERabbitGoodsCommentImage.vue';
 
 const props = defineProps({
   goods: {
@@ -157,6 +158,11 @@ const formatNickname = (nickname) => {
             <span class="attr">{{ formatSpecs(item.orderInfo.specs) }}</span>
           </div>
           <div class="text">{{ item.content }}</div>
+          <!-- 评论图片预览组件 -->
+          <ERabbitGoodsCommentImage
+            v-if="item?.pictures.length"
+            :pictures="item.pictures"
+          ></ERabbitGoodsCommentImage>
           <div class="time">
             <span>{{ item.createTime }}</span>
             <span class="zan">
