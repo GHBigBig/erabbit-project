@@ -42,6 +42,7 @@ const reqParams = reactive({
   hasPicture: null,
   tag: null,
   sortField: null,
+  total: 0, //评论总条数
 });
 const changeSort = (type) => {
   reqParams.sortField = type;
@@ -74,6 +75,7 @@ watch(
   async () => {
     const data = await findCommentListByGoods(props.goods.id, reqParams);
     commentList.value = data.result.items;
+    reqParams.total = data.result.counts;
   },
   { immediate: true }
 );
@@ -86,6 +88,11 @@ const formatSpecs = (specs) => {
 //处理用户昵称
 const formatNickname = (nickname) => {
   return nickname.substr(0, 1) + '****' + nickname.substr(-1);
+};
+
+const pageChange = (param) => {
+  console.debug(param);
+  reqParams.page = param.currPage;
 };
 </script>
 
@@ -173,6 +180,13 @@ const formatNickname = (nickname) => {
         </div>
       </div>
     </div>
+    <ERabbitPagination
+      v-if="commentList?.length"
+      :dataTotal="reqParams.total"
+      :pageSize="reqParams.pageSize"
+      :currPage="reqParams.page"
+      @change-page="pageChange"
+    ></ERabbitPagination>
   </div>
 </template>
 

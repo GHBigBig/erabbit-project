@@ -19,7 +19,7 @@ const goods = inject('goods');
     <img
       v-for="item in goods.details.pictures"
       :key="item"
-      src=""
+      :src="item"
       :data-src="item"
       alt="商品详情图片"
     />
@@ -46,9 +46,9 @@ const goods = inject('goods');
         color: #666;
       }
     }
-    > img {
-      width: 100%;
-    }
+  }
+  > img {
+    width: 100%;
   }
 }
 </style>
