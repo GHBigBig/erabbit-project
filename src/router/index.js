@@ -5,6 +5,7 @@ const Home = () => import('@/views/home/ERabbitHomeIndex.vue');
 const Cateogry = () => import('@/views/category/ERabbitCategory.vue');
 const SubCategory = () => import('@/views/category/ERabbitSubCategory.vue');
 const Product = () => import('@/views/goods/ERabbitGoodsIndex.vue');
+const Login = () => import('@/views/login/ERabbitLoginIndex.vue');
 
 const routes = [
   {
@@ -16,6 +17,11 @@ const routes = [
       { path: '/category/sub/:id', component: SubCategory },
       { path: '/product/:id', component: Product },
     ],
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   },
 ];
 

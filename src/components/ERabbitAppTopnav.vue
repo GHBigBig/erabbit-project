@@ -19,7 +19,7 @@ const profile = computed(() => {
           <li><a href="javascript:;">退出登录</a></li>
         </template>
         <template v-else>
-          <li><a href="javascript:;">请先登录</a></li>
+          <li><RouterLink to="/login">请先登录</RouterLink></li>
         </template>
         <li><a href="javascript:;">免费注册</a></li>
         <li><a href="javascript:;">我的订单</a></li>
