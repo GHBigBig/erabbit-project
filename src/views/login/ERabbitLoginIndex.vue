@@ -7,6 +7,7 @@ export default {
 import { ref } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
+import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
 
 const activeName = ref('account');
 </script>
@@ -37,7 +38,7 @@ const activeName = ref('account');
             </li>
           </ul>
         </nav>
-        <div v-if="activeName === 'account'" class="account-box">表单登录</div>
+        <ERabbitLoginForm v-if="activeName === 'account'"></ERabbitLoginForm>
         <div v-if="activeName === 'qrcode'" class="qrcode-box">
           <img src="../../assets/images/qrcode.jpg" alt="登录二维码" />
           <p>打开<a href="javascript:;">小兔鲜儿</a>扫码登录</p>
@@ -55,6 +56,8 @@ const activeName = ref('account');
   .wrapper {
     width: 380px;
     min-height: 400px;
+
+    padding: 0 40px;
     position: absolute;
     left: 50%;
     top: 54px;
