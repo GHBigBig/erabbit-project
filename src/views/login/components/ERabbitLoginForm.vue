@@ -5,6 +5,7 @@ export default {
 </script>
 <script setup>
 import { ref } from 'vue';
+import { Field, Form, ErrorMessage } from 'vee-validate';
 
 const isMsgLogin = ref(false);
 const isAgree = ref(false);
@@ -15,6 +16,65 @@ const setParentActive = (e) => {
 const cancelParentActive = (e) => {
   e.target.parentNode.classList.remove('active');
 };
+
+//用户名验证规则
+function validateAccount(value) {
+  if (!value) {
+    return '请输入用户名';
+  }
+  if (!/^[a-zA-Z]\w{5,19}$/.test(value)) {
+    return '字母开头且6-20个字符';
+  }
+  return true;
+}
+//密码验证规则
+function validatePassword(value) {
+  if (!value) {
+    return '请输入密码';
+  }
+  if (!/^\w{6,24}$/.test(value)) {
+    return '密码6~24个字符';
+  }
+  return true;
+}
+//手机号验证规则
+function validateMobile(value) {
+  if (!value) {
+    return '请输入手机号';
+  }
+  if (!/^1[3-9]\d{9}$/.test(value)) {
+    return '手机号格式错误';
+  }
+  return true;
+}
+//手机验证码验证规则
+function validateCode(value) {
+  if (!value) {
+    return '请输入验证码';
+  }
+  if (!/^\d{6}$/.test(value)) {
+    return '验证码为6位';
+  }
+  return true;
+}
+
+function validateIsAgree(value) {
+  if (!value) {
+    return '请勾选协议';
+  }
+  return true;
+}
+
+function onSubmit(values) {
+  console.log('onSubmit...');
+  console.debug(values);
+}
+
+const myForm = ref(null);
+async function handlerSubmit() {
+  const valid = await myForm.value.validate();
+  console.log(valid);
+}
 </script>
 
 <template>
@@ -32,64 +92,89 @@ const cancelParentActive = (e) => {
       </a>
     </div>
     <div class="form">
-      <form novalidate autocomplete="off">
+      <Form novalidate autocomplete="off" @submit="onSubmit" ref="myForm">
         <div v-if="!isMsgLogin">
           <div class="form-input-group">
             <label for="username"><i class="iconfont icon-user"></i></label>
-            <input
+            <Field
+              name="account"
               type="text"
               id="username"
               placeholder="请输入用户名"
+              :rules="validateAccount"
+              v-slot="e"
+              :data-error="e"
               @focus="setParentActive"
               @blur="cancelParentActive"
             />
+            <ErrorMessage name="account" class="invalid"></ErrorMessage>
           </div>
+
           <div class="form-input-group">
             <label for="password"><i class="iconfont icon-msg"></i></label>
-            <input
+            <Field
+              name="password"
               type="password"
               id="password"
+              autocomplete="off"
+              :rules="validatePassword"
               @focus="setParentActive"
               @blur="cancelParentActive"
               placeholder="请输入密码"
             />
+            <ErrorMessage name="password" class="invalid"></ErrorMessage>
           </div>
         </div>
         <div v-else>
           <div class="form-input-group">
             <label for="tel"><i class="iconfont icon-user"></i></label>
-            <input
+            <Field
+              name="mobile"
               type="text"
               id="tel"
               placeholder="请输入手机号"
+              :rules="validateMobile"
               @focus="setParentActive"
               @blur="cancelParentActive"
             />
+            <ErrorMessage name="mobile" class="invalid"></ErrorMessage>
           </div>
           <div class="form-input-group">
             <label for="code"><i class="iconfont icon-code"></i> </label>
-            <input
-              type="password"
+            <Field
+              name="code"
+              type="text"
               id="code"
+              :rules="validateCode"
               @focus="setParentActive"
               @blur="cancelParentActive"
               placeholder="请输入验证码"
             />
-            <span>发送验证码</span>
+            <ErrorMessage name="code" class="invalid"></ErrorMessage>
+            <span class="group">发送验证码</span>
           </div>
         </div>
 
         <div class="form-agreement">
           <div class="agree">
-            <ERabbitCheckBox v-model="isAgree"></ERabbitCheckBox>
+            <!-- <ERabbitCheckBox v-model="isAgree"></ERabbitCheckBox> -->
+            <Field
+              as="ERabbitCheckBox"
+              name="isAgree"
+              v-model="isAgree"
+              :rules="validateIsAgree"
+            ></Field>
             <span>我已同意</span>
             <a href="javascript:;">《隐私条款》</a>
             <span>和</span>
             <a href="javascript:;">《服务条款》</a>
           </div>
+          <ErrorMessage name="isAgree" class="error"></ErrorMessage>
         </div>
-        <ERabbitButton type="primary" class="btn-login"> 登录 </ERabbitButton>
-      </form>
+        <ERabbitButton @click="handlerSubmit" type="primary" class="btn-login">
+          登录
+        </ERabbitButton>
+      </Form>
     </div>
 
     <div class="action">
@@ -122,6 +207,7 @@ const cancelParentActive = (e) => {
       border: 1px solid #999;
       display: flex;
       align-items: stretch;
+      position: relative;
       label {
         height: 100%;
         width: calc(2.5rem - 2px);
@@ -140,21 +226,42 @@ const cancelParentActive = (e) => {
         flex: 1;
         padding-left: 10px;
       }
-      span {
+      span.group {
         line-height: calc(2.5rem - 2px);
         padding: 0 10px;
         background-color: #f5f5f5;
         color: #666;
         cursor: pointer;
       }
+      .invalid {
+        position: absolute;
+        top: 2.5rem;
+        font-size: 14px;
+        color: red;
+      }
+
       &.active {
         border-color: @erColor;
+        border-width: 2px;
+      }
+      &.error {
+        border-color: @warnColor;
+        border-width: 2px;
       }
     }
     .form-agreement {
-      margin-bottom: 28px;
+      position: relative;
+      .agree {
+        margin-bottom: 28px;
+      }
       a {
         color: #069;
+      }
+      .error {
+        position: absolute;
+        top: 1.4rem;
+        font-size: 14px;
+        color: red;
       }
     }
     .btn-login {
