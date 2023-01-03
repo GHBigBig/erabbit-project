@@ -1,11 +1,10 @@
 <script>
 export default {
-  name: 'ERabbitMessage',
+  name: 'ERabbitMeassage',
 };
 </script>
 <script setup>
 import { onMounted, ref } from 'vue';
-import Message from '@/components/library/Message';
 
 const props = defineProps({
   text: {
@@ -40,15 +39,15 @@ const styleOptions = {
 };
 const visible = ref(false);
 
+console.log('EM 组件~');
+
 onMounted(() => {
   visible.value = true;
 });
-
-setInterval(Message, 6000);
 </script>
 <template>
   <Transition name="down">
-    <div class="er-message" :style="styleOptions[type]">
+    <div class="er-message" :style="styleOptions[type]" v-show="visible">
       <i class="iconfont" :class="[styleOptions[type].icon]"></i>
       <span class="text">{{ props.text }}</span>
     </div>

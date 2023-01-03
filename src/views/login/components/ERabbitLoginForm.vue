@@ -7,6 +7,8 @@ export default {
 import { ref } from 'vue';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 
+const emits = defineEmits(['userLogin']);
+
 const isMsgLogin = ref(false);
 const isAgree = ref(false);
 
@@ -66,14 +68,15 @@ function validateIsAgree(value) {
 }
 
 function onSubmit(values) {
-  console.log('onSubmit...');
   console.debug(values);
-}
-
-const myForm = ref(null);
-async function handlerSubmit() {
-  const valid = await myForm.value.validate();
-  console.log(valid);
+  if (isMsgLogin.value) {
+    //手机号登录
+    console.debug('手机号登录~');
+  } else {
+    //账户密码登录
+    console.debug('账户密码登录~');
+    emits('userLogin', values);
+  }
 }
 </script>
 
@@ -92,7 +95,7 @@ async function handlerSubmit() {
       </a>
     </div>
     <div class="form">
-      <Form novalidate autocomplete="off" @submit="onSubmit" ref="myForm">
+      <Form novalidate autocomplete="off" @submit="onSubmit">
         <div v-if="!isMsgLogin">
           <div class="form-input-group">
             <label for="username"><i class="iconfont icon-user"></i></label>
@@ -169,9 +172,7 @@ async function handlerSubmit() {
           </div>
           <ErrorMessage name="isAgree" class="error"></ErrorMessage>
         </div>
-        <ERabbitButton @click="handlerSubmit" type="primary" class="btn-login">
-          登录
-        </ERabbitButton>
+        <ERabbitButton type="primary" class="btn-login"> 登录 </ERabbitButton>
       </Form>
     </div>
 

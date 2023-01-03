@@ -4,16 +4,39 @@ export default {
 };
 </script>
 <script setup>
-import { ref, getCurrentInstance } from 'vue';
+import { ref } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
 import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
+import { userAccountLogin } from '@/api/user';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import Message from '@/components/library/Message';
 
-const activeName = ref('account');
+const activeName = ref('account'); // 登录方式 扫码、账户登录
+const store = useStore();
+const router = useRouter();
+// const route = useRoute();
 
-const internalInstance = getCurrentInstance(); // 有效
-
-console.log(internalInstance);
+const accountLogin = ({ account, password }) => {
+  userAccountLogin({ account, password })
+    .then((data) => {
+      const { id, account, nickname, avater, token, mobile } = data.result;
+      store.commit('user/setUser', {
+        id,
+        account,
+        nickname,
+        avater,
+        token,
+        mobile,
+      });
+      Message({ type: 'success', text: '登录成功' });
+      router.push('/');
+    })
+    .catch((e) => {
+      Message({ type: 'error', text: e.response.data.message ?? '登陆失败' });
+    });
+};
 </script>
 <template>
   <div class="page-login">
@@ -42,13 +65,15 @@ console.log(internalInstance);
             </li>
           </ul>
         </nav>
-        <ERabbitLoginForm v-if="activeName === 'account'"></ERabbitLoginForm>
+        <ERabbitLoginForm
+          v-if="activeName === 'account'"
+          @user-login="accountLogin"
+        ></ERabbitLoginForm>
         <div v-if="activeName === 'qrcode'" class="qrcode-box">
           <img src="../../assets/images/qrcode.jpg" alt="登录二维码" />
           <p>打开<a href="javascript:;">小兔鲜儿</a>扫码登录</p>
         </div>
       </div>
-      <!-- <ERabbitMessage text="登陆失败!"></ERabbitMessage> -->
     </main>
     <ERabbitLoginFooter></ERabbitLoginFooter>
   </div>
