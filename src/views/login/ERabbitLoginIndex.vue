@@ -4,12 +4,16 @@ export default {
 };
 </script>
 <script setup>
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
 import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
 
 const activeName = ref('account');
+
+const internalInstance = getCurrentInstance(); // 有效
+
+console.log(internalInstance);
 </script>
 <template>
   <div class="page-login">
@@ -44,6 +48,7 @@ const activeName = ref('account');
           <p>打开<a href="javascript:;">小兔鲜儿</a>扫码登录</p>
         </div>
       </div>
+      <!-- <ERabbitMessage text="登陆失败!"></ERabbitMessage> -->
     </main>
     <ERabbitLoginFooter></ERabbitLoginFooter>
   </div>

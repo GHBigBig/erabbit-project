@@ -102,8 +102,6 @@ async function handlerSubmit() {
               id="username"
               placeholder="请输入用户名"
               :rules="validateAccount"
-              v-slot="e"
-              :data-error="e"
               @focus="setParentActive"
               @blur="cancelParentActive"
             />

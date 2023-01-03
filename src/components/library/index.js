@@ -1,6 +1,7 @@
 const modules = import.meta.glob('./*.vue'); //从文件系统导入多个模块
 
 import defaultImg from '@/assets/images/200.png';
+import Message from './Message';
 
 export default {
   install(app) {
@@ -29,5 +30,7 @@ export default {
       );
       observer.observe(el);
     });
+
+    app.config.globalProperties.$message = Message; //原型函数
   },
 };

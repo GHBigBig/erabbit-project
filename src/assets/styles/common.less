@@ -118,8 +118,6 @@ ul {
   }
 }
 
-
-
 .fade-right-enter-active,
 .fade-right-leave-active {
   transition: all 0.8s;
@@ -142,4 +140,20 @@ ul {
 .fade-top-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+.down {
+  &-enter {
+    &-from {
+      transform: translate3d(0, -75px, 0);
+      opacity: 0;
+    }
+    &-active {
+      transition: all 0.5s;
+    }
+    &-to {
+      transform: none;
+      opacity: 1;
+    }
+  }
 }
