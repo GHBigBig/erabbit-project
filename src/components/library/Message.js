@@ -12,8 +12,6 @@ export default ({ type, text }) => {
   const vnode = createVNode(ERabbitMeassage, { type, text });
   render(vnode, div);
 
-  console.log(this);
-
   clearTimeout(timer);
   timer = setTimeout(() => {
     render(null, div);

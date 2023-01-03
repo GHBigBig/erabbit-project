@@ -1,11 +1,19 @@
 <script setup>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
 const profile = computed(() => {
   return store.state.user.profile;
 });
+
+const router = useRouter();
+
+const logout = () => {
+  store.commit('user/setUser', {});
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -19,7 +27,7 @@ const profile = computed(() => {
               {{ store.state.user.profile.nickname }}
             </a>
           </li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <template v-else>
           <li><RouterLink to="/login">请先登录</RouterLink></li>

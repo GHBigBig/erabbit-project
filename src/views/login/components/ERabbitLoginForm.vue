@@ -111,14 +111,11 @@ function validateIsAgree(value) {
 }
 
 function onSubmit(values) {
-  console.debug(values);
   if (isMsgLogin.value) {
     //手机号登录
-    console.debug('手机号登录~');
     emits('telLogin', values);
   } else {
     //账户密码登录
-    console.debug('账户密码登录~');
     emits('userLogin', values);
   }
 }

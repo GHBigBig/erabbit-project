@@ -39,8 +39,6 @@ const styleOptions = {
 };
 const visible = ref(false);
 
-console.log('EM 组件~');
-
 onMounted(() => {
   visible.value = true;
 });
