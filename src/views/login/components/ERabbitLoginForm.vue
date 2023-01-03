@@ -4,13 +4,18 @@ export default {
 };
 </script>
 <script setup>
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { useIntervalFn } from '@vueuse/core';
+import { userMobileLoginMsg } from '@/api/user';
+import Message from '@/components/library/Message';
 
-const emits = defineEmits(['userLogin']);
+const emits = defineEmits(['userLogin', 'telLogin']);
 
 const isMsgLogin = ref(false);
 const isAgree = ref(false);
+const time = ref(0);
+const myForm = ref(null);
 
 const setParentActive = (e) => {
   e.target.parentNode.classList.add('active');
@@ -18,6 +23,44 @@ const setParentActive = (e) => {
 const cancelParentActive = (e) => {
   e.target.parentNode.classList.remove('active');
 };
+
+//短信计时
+const { pause, resume } = useIntervalFn(
+  () => {
+    time.value--;
+    if (time.value <= 0) {
+      pause();
+    }
+  },
+  1000,
+  { immediate: false }
+);
+onUnmounted(() => {
+  pause();
+});
+//卸载停止计时
+onUnmounted(() => pause());
+
+//发送短信
+const send = async () => {
+  const value = document.querySelector('#tel').value;
+  const valid = validateMobile(value);
+  if (true === valid) {
+    //发送成功
+    await userMobileLoginMsg(value);
+    Message({ type: 'success', text: '发送成功' });
+    time.value = 60;
+    resume();
+  } else {
+    //发送失败
+    myForm.value.setFieldError('mobile', valid);
+  }
+};
+
+// 停止挂载的时候
+onUnmounted(() => {
+  pause();
+});
 
 //用户名验证规则
 function validateAccount(value) {
@@ -72,6 +115,7 @@ function onSubmit(values) {
   if (isMsgLogin.value) {
     //手机号登录
     console.debug('手机号登录~');
+    emits('telLogin', values);
   } else {
     //账户密码登录
     console.debug('账户密码登录~');
@@ -95,7 +139,7 @@ function onSubmit(values) {
       </a>
     </div>
     <div class="form">
-      <Form novalidate autocomplete="off" @submit="onSubmit">
+      <Form novalidate autocomplete="off" @submit="onSubmit" ref="myForm">
         <div v-if="!isMsgLogin">
           <div class="form-input-group">
             <label for="username"><i class="iconfont icon-user"></i></label>
@@ -151,8 +195,10 @@ function onSubmit(values) {
               @blur="cancelParentActive"
               placeholder="请输入验证码"
             />
+            <span class="group" @click="send">
+              {{ time === 0 ? '发送验证码' : `${time}秒后发送` }}
+            </span>
             <ErrorMessage name="code" class="invalid"></ErrorMessage>
-            <span class="group">发送验证码</span>
           </div>
         </div>
 
