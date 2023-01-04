@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
 import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
@@ -12,11 +12,19 @@ import { userAccountLogin, userMobileLogin } from '@/api/user';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import Message from '@/components/library/Message';
+import QC from 'qc';
 
 const activeName = ref('account'); // 登录方式 扫码、账户登录
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+
+onMounted(() => {
+  // 组件渲染完毕，使用QC生成QQ登录按钮
+  QC.Login({
+    btnId: 'qqLoginBtn',
+  });
+});
 
 const accountLogin = ({ account, password }) => {
   userAccountLogin({ account, password })
