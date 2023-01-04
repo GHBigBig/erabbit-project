@@ -23,6 +23,11 @@ const routes = [
     name: 'login',
     component: Login,
   },
+  {
+    path: '/login/callback',
+    name: 'loginCallback',
+    component: () => import('@/views/login/ERabbitLoginCallback.vue'),
+  },
 ];
 
 const router = createRouter({
