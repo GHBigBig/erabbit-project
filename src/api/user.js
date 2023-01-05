@@ -37,4 +37,29 @@ const userQQLogin = (unionId, source = 6) => {
   return request('/login/social', 'post', { unionId, source });
 };
 
-export { userAccountLogin, userMobileLogin, userMobileLoginMsg, userQQLogin };
+/**
+ * QQ绑定界面，发送短信验证码
+ * @param {String} mobile 手机号
+ * @returns Promise
+ */
+const userQQBindCode = (mobile) => {
+  return request('/login/social/code', 'get', { mobile });
+};
+
+/**
+ * 将QQ和系统账户绑定
+ * @param {Object} { unionId: QQ唯一标识, mobile: 手机号, code: 验证码 }
+ * @returns Promise
+ */
+const userQQBindLogin = ({ unionId, mobile, code }) => {
+  return request('/login/social/bind', 'post', { unionId, mobile, code });
+};
+
+export {
+  userAccountLogin,
+  userMobileLogin,
+  userMobileLoginMsg,
+  userQQLogin,
+  userQQBindCode,
+  userQQBindLogin,
+};

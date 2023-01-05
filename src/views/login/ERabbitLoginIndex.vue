@@ -4,15 +4,14 @@ export default {
 };
 </script>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
 import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
-import { userAccountLogin, userMobileLogin, userQQLogin } from '@/api/user';
+import { userAccountLogin, userMobileLogin } from '@/api/user';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import Message from '@/components/library/Message';
-import QC from 'qc';
 
 const activeName = ref('account'); // 登录方式 扫码、账户登录
 const store = useStore();

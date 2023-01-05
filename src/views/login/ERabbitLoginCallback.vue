@@ -19,12 +19,17 @@ const store = useStore();
 const router = useRouter();
 
 const hasAccount = ref(true);
+const toggle = (value) => {
+  hasAccount.value = value;
+};
 
 const isBind = ref(true); //用户QQ 是否已经绑定 系统账户
+const unionId = ref(null);
 //默认用户QQ已经绑定了系统账户，会进行一次登录，根据登录结果判定默认是否成立
 if (QC.Login.check()) {
   //检查 QQ 是否登录
   QC.Login.getMe((openId) => {
+    unionId.value = openId;
     userQQLogin(openId)
       .then((data) => {
         const { id, account, avatar, nickname, token, mobile } = data.result;
@@ -49,7 +54,7 @@ if (QC.Login.check()) {
 
 <template>
   <ERabbitLoginHeader>联合登录</ERabbitLoginHeader>
-  <main v-if="!isBind" class="container">
+  <main v-if="isBind" class="container">
     <div class="unbind">
       <div class="loading"></div>
     </div>
@@ -58,13 +63,21 @@ if (QC.Login.check()) {
     <nav class="tab-header">
       <ul>
         <li>
-          <a href="javascript:;">
+          <a
+            href="javascript:;"
+            @click="toggle(true)"
+            :class="{ disable: !hasAccount }"
+          >
             <i class="iconfont icon-bind"></i>
             <span>已有小兔鲜账号，请绑定手机</span>
           </a>
         </li>
         <li>
-          <a href="javascript:;">
+          <a
+            href="javascript:;"
+            @click="toggle(false)"
+            :class="{ disable: hasAccount }"
+          >
             <i class="iconfont icon-edit"></i>
             <span>没有小兔鲜账号，请完善资料</span>
           </a>
@@ -72,7 +85,7 @@ if (QC.Login.check()) {
       </ul>
     </nav>
     <div v-if="hasAccount" class="tab-content">
-      <ERabbitLoginCallbackBind></ERabbitLoginCallbackBind>
+      <ERabbitLoginCallbackBind :union-id="unionId"></ERabbitLoginCallbackBind>
     </div>
     <div v-else class="tab_content">
       <ERabbitCallbackLoginPatch></ERabbitCallbackLoginPatch>
@@ -118,6 +131,10 @@ if (QC.Login.check()) {
           border-bottom: 2px solid @erColor;
           display: inline-block;
           color: #666;
+
+          &.disable {
+            border-color: #e4e4e4;
+          }
 
           i {
             font-size: 22px;
