@@ -27,4 +27,14 @@ const userMobileLoginMsg = (mobile) => {
   return request('/login/code', 'get', { mobile });
 };
 
-export { userAccountLogin, userMobileLogin, userMobileLoginMsg };
+/**
+ * 使用 QQ 登录
+ * @param {String} unionId QQ登录唯一标识
+ * @param {Number} source 整数 来源 1为pc，2为webapp，3为微信小程序，4为Android，5为ios,6为qq,7为微信
+ * @returns Promise
+ */
+const userQQLogin = (unionId, source = 6) => {
+  return request('/login/social', 'post', { unionId, source });
+};
+
+export { userAccountLogin, userMobileLogin, userMobileLoginMsg, userQQLogin };

@@ -8,7 +8,7 @@ import { ref, onMounted } from 'vue';
 import ERabbitLoginFooter from './components/ERabbitLoginFooter.vue';
 import ERabbitLoginHeader from './components/ERabbitLoginHeader.vue';
 import ERabbitLoginForm from './components/ERabbitLoginForm.vue';
-import { userAccountLogin, userMobileLogin } from '@/api/user';
+import { userAccountLogin, userMobileLogin, userQQLogin } from '@/api/user';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import Message from '@/components/library/Message';
@@ -19,12 +19,14 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
-onMounted(() => {
-  // 组件渲染完毕，使用QC生成QQ登录按钮
-  QC.Login({
-    btnId: 'qqLoginBtn',
-  });
-});
+// onMounted(() => {
+//   // 组件渲染完毕，使用QC生成QQ登录按钮
+//   QC.Login({
+//     btnId: 'qqLoginBtn',
+//   });
+// });
+
+store.commit('user/setRedirectUrl', route.query.redirectUrl); //存储回调地址，提供将来QQ回调页使用
 
 const accountLogin = ({ account, password }) => {
   userAccountLogin({ account, password })

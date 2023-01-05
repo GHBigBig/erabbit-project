@@ -1,3 +1,9 @@
+<script>
+export default {
+  name: 'ERabbitLoginCallbackBind',
+};
+</script>
+<script setup></script>
 <template>
   <div class="er-form">
     <div class="user-info">

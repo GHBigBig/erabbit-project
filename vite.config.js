@@ -28,4 +28,12 @@ export default defineConfig({
   build: {
     assetsInlineLimit: 10,
   },
+  server: {
+    port: 8080,
+    proxy: {
+      '/#/login/callback': {
+        target: '/login/callback',
+      },
+    },
+  },
 });
