@@ -88,7 +88,8 @@ if (QC.Login.check()) {
       <ERabbitLoginCallbackBind :union-id="unionId"></ERabbitLoginCallbackBind>
     </div>
     <div v-else class="tab_content">
-      <ERabbitCallbackLoginPatch></ERabbitCallbackLoginPatch>
+      <ERabbitCallbackLoginPatch :union-id="unionId">
+      </ERabbitCallbackLoginPatch>
     </div>
   </main>
   <ERabbitLoginFooter></ERabbitLoginFooter>

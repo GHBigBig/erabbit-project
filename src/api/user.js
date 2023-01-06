@@ -55,6 +55,38 @@ const userQQBindLogin = ({ unionId, mobile, code }) => {
   return request('/login/social/bind', 'post', { unionId, mobile, code });
 };
 
+/**
+ * 检查账户是否存在
+ * @param {String} account 用户账户
+ * @returns Promise
+ */
+const userCheckAccount = (account) => {
+  return request('/register/check', 'get', { account });
+};
+
+/**
+ * QQ登录后完善信息界面，发送短信验证码
+ * @param {String} mobile 手机号
+ * @returns Promise
+ */
+const userQQPatchCode = (mobile) => {
+  return request('/login/social/code', 'get', { mobile });
+};
+
+/**
+ * QQ 登录完善信息
+ * @param {Object} { unionId: QQ唯一标识, mobile: 手机号, code: 验证码 }
+ * @returns Promise
+ */
+const userQQPatchLogin = ({ unionId, mobile, code, account, password }) => {
+  return request(`/login/social/${unionId}/complement`, 'post', {
+    mobile,
+    code,
+    account,
+    password,
+  });
+};
+
 export {
   userAccountLogin,
   userMobileLogin,
@@ -62,4 +94,7 @@ export {
   userQQLogin,
   userQQBindCode,
   userQQBindLogin,
+  userCheckAccount,
+  userQQPatchCode,
+  userQQPatchLogin,
 };
