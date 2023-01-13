@@ -1,7 +1,8 @@
 <script setup>
 import { findGoods } from '@/api/product';
-import { nextTick, provide, ref, watch } from 'vue';
+import { getCurrentInstance, nextTick, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import ERabbitGoodsHot from './components/ERabbitGoodsHot.vue';
 import ERabbitGoodsImage from './components/ERabbitGoodsImage.vue';
 import ERabbitGoodsName from './components/ERabbitGoodsName.vue';
@@ -32,16 +33,47 @@ watch(
   { immediate: true }
 );
 
+const num = ref(1); //购买数量
+const currSku = ref(null);
+const store = useStore();
+const instance = getCurrentInstance();
 //用户选择的规格
 const changeSku = (sku) => {
   if (sku.skuid) {
     goods.value.price = sku.price;
     goods.value.oldPrice = sku.oldPrice;
     goods.value.inventory = sku.inventory;
+    currSku.value = sku;
+  } else {
+    currSku.value = null;
   }
 };
-
-const num = ref(1); //购买数量
+//添加商品购物车
+const insertCart = () => {
+  if (!currSku.value) {
+    return instance.proxy.$message('请选择商品规格');
+  }
+  if (num.value > goods.value.inventory) {
+    return instance.proxy.$message('库存不足');
+  }
+  store
+    .dispatch('cart/insertCart', {
+      id: goods.value.id,
+      skuId: currSku.value.skuId,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: currSku.value.price,
+      nowPrice: currSku.value.price,
+      count: num.value,
+      attrsText: currSku.value.specsText,
+      selected: true,
+      isEffective: true,
+      stock: currSku.value.inventory,
+    })
+    .then(() => {
+      instance.proxy.$message('加入购物车成功', 'success');
+    });
+};
 </script>
 <template>
   <div class="er-goods-page" v-if="goods">
