@@ -1,6 +1,7 @@
 <script setup>
 import ERabbitAppHearderNav from './ERabbitAppHearderNav.vue';
 import ERabbitAppHeaderSticky from './ERabbitAppHeaderSticky.vue';
+import ERabbitAppHeaderCart from './ERabbitAppHeaderCart.vue';
 </script>
 <template>
   <header class="app-header">
@@ -12,12 +13,7 @@ import ERabbitAppHeaderSticky from './ERabbitAppHeaderSticky.vue';
         <i class="iconfont icon-search"></i>
         <input type="search" placeholder="搜一搜" />
       </div>
-      <div class="cart">
-        <a href="#" class="curr">
-          <i class="iconfont icon-cart"></i>
-          <em>2</em>
-        </a>
-      </div>
+      <ERabbitAppHeaderCart></ERabbitAppHeaderCart>
     </div>
     <ERabbitAppHeaderSticky></ERabbitAppHeaderSticky>
   </header>
@@ -54,26 +50,6 @@ import ERabbitAppHeaderSticky from './ERabbitAppHeaderSticky.vue';
     input {
       padding-left: 5px;
       width: 140px;
-    }
-  }
-  .cart {
-    position: relative;
-    padding-left: 1rem;
-    i {
-      font-size: 1.5rem;
-      line-height: 100%;
-    }
-    em {
-      font-style: normal;
-      font-size: 12px;
-      color: #fff;
-      background: @helpColor;
-      position: absolute;
-      top: 0;
-      right: 0;
-      transform: translate(50%, -50%);
-      padding: 0 0.5rem;
-      border-radius: 10px;
     }
   }
 }
