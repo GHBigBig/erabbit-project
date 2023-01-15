@@ -13,17 +13,17 @@ export default {
   },
   getters: {
     //派生的有效的商品列表
-    vaildList(state) {
+    validList(state) {
       return state.list.filter((item) => item.stock > 0 && item.isEffective);
     },
     //派生的有效的商品件数
-    vaildTotal(state, getters) {
-      return getters.vaildList.reduce((p, c) => p + c.count, 0);
+    validTotal(state, getters) {
+      return getters.validList.reduce((p, c) => p + c.count, 0);
     },
     //有效的商品总金额
-    vaildAmount(state, getters) {
+    validAmount(state, getters) {
       return (
-        getters.vaildList.reduce((p, c) => p + c.nowPrice * 100 * c.count, 0) /
+        getters.validList.reduce((p, c) => p + c.nowPrice * 100 * c.count, 0) /
         100
       );
     },

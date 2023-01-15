@@ -106,7 +106,7 @@ const clickSpecs = (item, val) => {
   const selectedArr = getSelectArr(props.goods.specs).filter((v) => v);
   //判断是一下是否完成了商品的规格的选择
   if (selectedArr.length === props.goods.specs.length) {
-    const skuIds = pathMap[selectedArr.join(spliter)];
+    const skuIds = pathMap.value[selectedArr.join(spliter)];
     const sku = props.goods.skus.find((sku) => sku.id === skuIds[0]);
     emits('change', {
       skuId: sku.id,

@@ -13,13 +13,13 @@ store.dispatch('cart/findCartList');
   <div class="cart">
     <a href="#" class="curr">
       <i class="iconfont icon-cart"></i>
-      <em>{{ $store.getters['cart/vaildTotal'] }}</em>
+      <em>{{ $store.getters['cart/validTotal'] }}</em>
     </a>
     <div v-if="$store.getters['cart/validTotal'] > 0" class="layer">
       <ul class="list">
         <li
           class="item"
-          v-for="item in $store.getters['cart/vaildList']"
+          v-for="item in $store.getters['cart/validList']"
           :key="item.skuId"
         >
           <RouterLink to="">

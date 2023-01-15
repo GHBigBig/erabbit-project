@@ -39,7 +39,8 @@ const store = useStore();
 const instance = getCurrentInstance();
 //用户选择的规格
 const changeSku = (sku) => {
-  if (sku.skuid) {
+  console.log('sku', sku);
+  if (sku.skuId) {
     goods.value.price = sku.price;
     goods.value.oldPrice = sku.oldPrice;
     goods.value.inventory = sku.inventory;
@@ -50,11 +51,12 @@ const changeSku = (sku) => {
 };
 //添加商品购物车
 const insertCart = () => {
+  console.log('currSku', currSku);
   if (!currSku.value) {
-    return instance.proxy.$message('请选择商品规格');
+    return instance.proxy.$message({ type: 'warn', text: '请选择商品规格' });
   }
   if (num.value > goods.value.inventory) {
-    return instance.proxy.$message('库存不足');
+    return instance.proxy.$message({ type: 'warn', text: '库存不足' });
   }
   store
     .dispatch('cart/insertCart', {
@@ -71,7 +73,7 @@ const insertCart = () => {
       stock: currSku.value.inventory,
     })
     .then(() => {
-      instance.proxy.$message('加入购物车成功', 'success');
+      instance.proxy.$message({ text: '加入购物车成功', type: 'success' });
     });
 };
 </script>
@@ -103,7 +105,11 @@ const insertCart = () => {
             label="数量"
             :max="goods.inventory"
           ></ERabbitNumerBox>
-          <ERabbitButton type="primary" style="margin-top: 20px">
+          <ERabbitButton
+            type="primary"
+            @click="insertCart"
+            style="margin-top: 20px"
+          >
             加入购物车
           </ERabbitButton>
         </div>
