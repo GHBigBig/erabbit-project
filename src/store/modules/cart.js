@@ -1,5 +1,8 @@
 //购物车
 // 本地：id skuId name picture price nowPrice count attrsText selected stock isEffective
+
+import { getNewCartGoods } from '@/api/cart';
+
 // 线上：比上面多 isCollect 有用 discount 无用 两项项信息
 export default {
   namespaced: true,
@@ -44,6 +47,20 @@ export default {
       state.list.unshift(goods);
       console.log(state.list);
     },
+    //修改购物车商品
+    updateCart(state, goods) {
+      const updateGoods = state.list.find((item) => item.skuId === goods.skuId);
+      //goods 中的字段有可能不完整
+      for (let key in goods) {
+        if (
+          goods[key] !== null &&
+          goods[key] !== undefined &&
+          goods[key] !== ''
+        ) {
+          updateGoods[key] = goods[key];
+        }
+      }
+    },
   },
   actions: {
     //执行异步操作
@@ -56,6 +73,31 @@ export default {
           //未登录
           ctx.commit('insertCart', goods);
           resolve();
+        }
+      });
+    },
+    //获取购物车列表
+    findCartList(ctx) {
+      return new Promise((resolve, reject) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录 TODO
+        } else {
+          const promiseArr = ctx.state.list.map((item) =>
+            getNewCartGoods(item.skuId)
+          );
+          Promise.all(promiseArr)
+            .then((dataArr) => {
+              dataArr.forEach((data, i) =>
+                ctx.commit('updateCart', {
+                  skuId: ctx.state.list[i].skuId,
+                  ...data.result,
+                })
+              );
+              resolve();
+            })
+            .catch((e) => {
+              reject(e);
+            });
         }
       });
     },
