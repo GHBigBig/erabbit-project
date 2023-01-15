@@ -8,25 +8,26 @@ export default {
   <div class="cart">
     <a href="#" class="curr">
       <i class="iconfont icon-cart"></i>
-      <em>2</em>
+      <em>{{ $store.getters['cart/vaildTotal'] }}</em>
     </a>
-    <div class="layer">
+    <div v-if="$store.getters['cart/validTotal'] > 0" class="layer">
       <ul class="list">
-        <li class="item" v-for="i in 4" :key="i">
+        <li
+          class="item"
+          v-for="item in $store.getters['cart/vaildList']"
+          :key="item.skuId"
+        >
           <RouterLink to="">
-            <img
-              src="https://yanxuan-item.nosdn.127.net/ead73130f3dbdb3cabe1c7b0f4fd3d28.png"
-              alt="商品图片"
-            />
+            <img :src="item.picture" alt="商品图片" />
             <div class="center">
               <p class="name ellipsis-2">
-                和手足干裂说拜拜 ingrams手足皲裂修复霜
+                {{ item.name }}
               </p>
-              <p class="attr ellipsis">颜色：修复绿瓶 容量：150ml</p>
+              <p class="attr ellipsis">{{ item.attrsText }}</p>
             </div>
             <div class="right">
-              <p class="price">&yen;45.00</p>
-              <p class="count">x2</p>
+              <p class="price">&yen;{{ item.nowPrice }}</p>
+              <p class="count">x{{ item.count }}</p>
             </div>
           </RouterLink>
           <i class="iconfont icon-close-new"></i>
@@ -34,8 +35,8 @@ export default {
       </ul>
       <div class="foot">
         <div class="total">
-          <p>共3件商品</p>
-          <p class="price">&yen;135.00</p>
+          <p>共{{ $store.getters['cart/validTotal'] }}件商品</p>
+          <p class="price">&yen;{{ $store.getters['cart/validAmount'] }}</p>
         </div>
         <ERabbitButton type="plain" style="margin-right: 10px">
           去购物车结算
