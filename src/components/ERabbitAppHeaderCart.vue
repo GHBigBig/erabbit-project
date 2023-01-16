@@ -5,9 +5,20 @@ export default {
 </script>
 <script setup>
 import { useStore } from 'vuex';
+import Message from './library/Message';
 
 const store = useStore();
 store.dispatch('cart/findCartList');
+
+const deleteCart = (skuId) => {
+  store
+    .dispatch('cart/deleteCart', skuId)
+    .then(() => {
+      Message({ type: 'success', text: '删除成功' });
+      store.dispatch('cart/findCartList');
+    })
+    .catch(() => Message({ type: 'error', text: '删除失败' }));
+};
 </script>
 <template>
   <div class="cart">
@@ -35,7 +46,10 @@ store.dispatch('cart/findCartList');
               <p class="count">x{{ item.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new"></i>
+          <i
+            class="iconfont icon-close-new"
+            @click="deleteCart(item.skuId)"
+          ></i>
         </li>
       </ul>
       <div class="foot">
@@ -180,6 +194,7 @@ store.dispatch('cart/findCartList');
           transform: translateY(-50%);
           opacity: 0;
           transition: all 0.4s 0.2s;
+          cursor: pointer;
         }
       }
     }

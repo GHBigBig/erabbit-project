@@ -39,7 +39,6 @@ export default {
       if (sameIndex >= 0) {
         // 商品信息累计
         goods.count = state.list[sameIndex].count + goods.count;
-        console.log(goods);
         // 删除goods
         state.list.splice(sameIndex, 1);
         console.log(state.list);
@@ -60,6 +59,11 @@ export default {
           updateGoods[key] = goods[key];
         }
       }
+    },
+    //删除购物车商品
+    deleteCart(state, skuId) {
+      const index = state.list.findIndex((item) => item.skuId == skuId);
+      state.list.splice(index, 1);
     },
   },
   actions: {
@@ -98,6 +102,17 @@ export default {
             .catch((e) => {
               reject(e);
             });
+        }
+      });
+    },
+    //删除购物车商品
+    deleteCart(ctx, skuId) {
+      return new Promise((resolve) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录TODO
+        } else {
+          ctx.commit('deleteCart', skuId);
+          resolve();
         }
       });
     },

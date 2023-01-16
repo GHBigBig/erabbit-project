@@ -39,7 +39,6 @@ const store = useStore();
 const instance = getCurrentInstance();
 //用户选择的规格
 const changeSku = (sku) => {
-  console.log('sku', sku);
   if (sku.skuId) {
     goods.value.price = sku.price;
     goods.value.oldPrice = sku.oldPrice;
@@ -51,7 +50,6 @@ const changeSku = (sku) => {
 };
 //添加商品购物车
 const insertCart = () => {
-  console.log('currSku', currSku);
   if (!currSku.value) {
     return instance.proxy.$message({ type: 'warn', text: '请选择商品规格' });
   }
