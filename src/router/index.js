@@ -28,6 +28,11 @@ const routes = [
     name: 'loginCallback',
     component: () => import('@/views/login/ERabbitLoginCallback.vue'),
   },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('@/views/cart/ERabbitCartIndex.vue'),
+  },
 ];
 
 const router = createRouter({

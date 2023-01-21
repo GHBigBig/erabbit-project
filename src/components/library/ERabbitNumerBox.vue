@@ -34,7 +34,7 @@ const changeNum = (step) => {
 
 <template>
   <div class="er-numberbox">
-    <div class="label">数量</div>
+    <div class="label"><slot></slot></div>
     <div class="numberbox">
       <a
         href="javascript:"

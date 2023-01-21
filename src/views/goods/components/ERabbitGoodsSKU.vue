@@ -10,7 +10,7 @@ import { computed } from 'vue';
 const props = defineProps({
   goods: {
     type: Object,
-    default: () => ({ specs: [], sku: [] }),
+    default: () => ({ specs: [], skus: [] }),
   },
   skuid: {
     type: String,

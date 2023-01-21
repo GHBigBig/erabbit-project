@@ -22,10 +22,10 @@ const deleteCart = (skuId) => {
 </script>
 <template>
   <div class="cart">
-    <a href="#" class="curr">
+    <RouterLink to="/cart" class="curr">
       <i class="iconfont icon-cart"></i>
       <em>{{ $store.getters['cart/validTotal'] }}</em>
-    </a>
+    </RouterLink>
     <div v-if="$store.getters['cart/validTotal'] > 0" class="layer">
       <ul class="list">
         <li
@@ -33,7 +33,7 @@ const deleteCart = (skuId) => {
           v-for="item in $store.getters['cart/validList']"
           :key="item.skuId"
         >
-          <RouterLink to="">
+          <RouterLink :to="`/product/${item.id}`">
             <img :src="item.picture" alt="商品图片" />
             <div class="center">
               <p class="name ellipsis-2">
@@ -57,7 +57,11 @@ const deleteCart = (skuId) => {
           <p>共{{ $store.getters['cart/validTotal'] }}件商品</p>
           <p class="price">&yen;{{ $store.getters['cart/validAmount'] }}</p>
         </div>
-        <ERabbitButton type="plain" style="margin-right: 10px">
+        <ERabbitButton
+          type="plain"
+          style="margin-right: 10px"
+          @click="$router.push('/cart')"
+        >
           去购物车结算
         </ERabbitButton>
       </div>
