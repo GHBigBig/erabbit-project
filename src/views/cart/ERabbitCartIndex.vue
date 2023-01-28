@@ -7,11 +7,19 @@ export default {
 <script setup>
 import ERabbitAppFooter from '@/components/ERabbitAppFooter.vue';
 import ERabbitAppHearder from '@/components/ERabbitAppHearder.vue';
+import { useStore } from 'vuex';
 import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue';
 
+//阻止事件传播
 function f(e) {
   e.stopImmediatePropagation();
 }
+
+const store = useStore();
+
+const checkOne = (skuId, selected) => {
+  store.dispatch('cart/updateCart', { skuId, selected });
+};
 </script>
 
 <template>
@@ -47,7 +55,10 @@ function f(e) {
               :key="item.skuId"
             >
               <td width="120">
-                <ERabbitCheckBox :modelValue="item.selected"></ERabbitCheckBox>
+                <ERabbitCheckBox
+                  :modelValue="item.selected"
+                  @update:modelValue="($event) => checkOne(item.skuId, $event)"
+                ></ERabbitCheckBox>
               </td>
               <td width="400">
                 <div class="goods">

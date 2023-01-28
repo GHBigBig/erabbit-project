@@ -146,5 +146,17 @@ export default {
         }
       });
     },
+    //修改购物车信息
+    updateCart(ctx, goods) {
+      return new Promise((resolve) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录 TODO
+        } else {
+          //本地修改
+          ctx.commit('updateCart', goods);
+          resolve();
+        }
+      });
+    },
   },
 };
