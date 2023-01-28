@@ -27,6 +27,36 @@ export default {
         100
       );
     },
+    //无效商品列表
+    invalidList(state) {
+      return state.list.filter((item) => !(item.stock > 0 && item.isEffective));
+    },
+    //选中的商品列表
+    selectedList(state, getters) {
+      return getters.validList.filter((item) => item.selected);
+    },
+    //选中的商品总件数
+    selectedTotal(state, getters) {
+      return getters.selectedList.reduce((p, c) => {
+        p + c.count;
+      }, 0);
+    },
+    //选中的商品总金额
+    selectedAmount(state, getters) {
+      return (
+        getters.selectedList.reduce(
+          (p, c) => p + c.nowPrice * 100 * c.count,
+          0
+        ) / 100
+      );
+    },
+    // 是否全选
+    isCheckAll(state, getters) {
+      return (
+        getters.validList.length === getters.selectedList &&
+        getters.selectedList.length !== 0
+      );
+    },
   },
   mutations: {
     // mutations 必须同步执行

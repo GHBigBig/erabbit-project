@@ -1,9 +1,12 @@
 <script>
 export default {
   name: 'ERabbitCartIndex',
+  components: { ERabbitAppHearder, ERabbitAppFooter },
 };
 </script>
 <script setup>
+import ERabbitAppFooter from '@/components/ERabbitAppFooter.vue';
+import ERabbitAppHearder from '@/components/ERabbitAppHearder.vue';
 import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue';
 
 function f(e) {
@@ -12,6 +15,7 @@ function f(e) {
 </script>
 
 <template>
+  <ERabbitAppHearder></ERabbitAppHearder>
   <div class="er-cart-page">
     <div class="container">
       <ERabbitBread>
@@ -22,7 +26,13 @@ function f(e) {
         <table>
           <thead>
             <tr>
-              <th width="120"><ERabbitCheckBox>全选</ERabbitCheckBox></th>
+              <th width="120">
+                <ERabbitCheckBox
+                  :modelValue="$store.getters['cart/isCheckAll']"
+                >
+                  全选
+                </ERabbitCheckBox>
+              </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
               <th width="180">数量</th>
@@ -32,27 +42,40 @@ function f(e) {
           </thead>
           <!-- 有效商品 -->
           <tbody>
-            <tr v-for="i in 3" :key="i">
-              <td width="120"><ERabbitCheckBox></ERabbitCheckBox></td>
+            <tr
+              v-for="item in $store.getters['cart/validList']"
+              :key="item.skuId"
+            >
+              <td width="120">
+                <ERabbitCheckBox :modelValue="item.selected"></ERabbitCheckBox>
+              </td>
               <td width="400">
                 <div class="goods">
-                  <RouterLink to="/">
-                    <img
-                      src="https://yanxuan-item.nosdn.127.net/13ab302f8f2c954d873f03be36f8fb03.png"
-                      alt=""
-                    />
+                  <RouterLink :to="`/product/${item.id}`">
+                    <img :src="item.picture" alt="商品图片" />
                   </RouterLink>
                   <div>
                     <p class="name ellipsis">
-                      和手足干裂说拜拜 ingrams手足皲裂修复霜
+                      {{ item.name }}
                     </p>
                     <!-- 选择规格组件 -->
+                    <p class="attr">{{ item.attrsText }}</p>
                   </div>
                 </div>
               </td>
-              <td width="220">&yen;123.00</td>
-              <td width="180"><ERabbitNumerBox></ERabbitNumerBox></td>
-              <td width="180" class="price">&yen;123.00</td>
+              <td width="220">
+                <p>&yen;{{ item.nowPrice }}</p>
+                <p v-if="item.price - item.nowPrice > 0">
+                  比加入时降价
+                  <span class="red">&yen;{{ item.price - item.nowPrice }}</span>
+                </p>
+              </td>
+              <td width="180">
+                <ERabbitNumerBox :modelValue="item.count"></ERabbitNumerBox>
+              </td>
+              <td width="180" class="price">
+                <p>&yen;{{ (item.nowPrice * 100 * item.count) / 100 }}</p>
+              </td>
               <td width="140" class="operation">
                 <p><a href="javascript:;">移入收藏夹</a></p>
                 <p class="del"><a href="javascript:;">删除</a></p>
@@ -97,24 +120,32 @@ function f(e) {
       </div>
       <div class="action">
         <div class="batch">
-          <ERabbitCheckBox type="primary">全选</ERabbitCheckBox>
+          <ERabbitCheckBox
+            type="primary"
+            :modelValue="$store.getters['cart/isCheckAll']"
+          >
+            全选
+          </ERabbitCheckBox>
           <a href="javascript:;">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
           <a href="javascript:;">清空失效商品</a>
         </div>
         <div class="total">
-          共2件商品，已选择两件，商品合计：
-          <span>&yen;129.99 </span>
-          <ERabbitButton type="primary"> 加单结算 </ERabbitButton>
+          共{{ $store.getters['cart/validTotal'] }}件商品，已选择
+          {{ $store.getters['cart/selectedTotal'] }}件，商品合计：
+          <span>&yen;{{ $store.getters['cart/selectedAmount'] }} </span>
+          <ERabbitButton type="primary"> 下单结算 </ERabbitButton>
         </div>
       </div>
       <ERabbitGoodsRecommend></ERabbitGoodsRecommend>
     </div>
   </div>
+  <ERabbitAppFooter></ERabbitAppFooter>
 </template>
 
 <style scoped lang="less">
 .er-cart-page {
+  padding-bottom: 20px;
   .tit {
     color: #666;
     font-size: 16px;
