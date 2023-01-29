@@ -20,6 +20,10 @@ const store = useStore();
 const checkOne = (skuId, selected) => {
   store.dispatch('cart/updateCart', { skuId, selected });
 };
+
+const checkAll = (selected) => {
+  store.dispatch('cart/checkAllCart', selected);
+};
 </script>
 
 <template>
@@ -37,6 +41,7 @@ const checkOne = (skuId, selected) => {
               <th width="120">
                 <ERabbitCheckBox
                   :modelValue="$store.getters['cart/isCheckAll']"
+                  @update:modelValue="checkAll"
                 >
                   全选
                 </ERabbitCheckBox>

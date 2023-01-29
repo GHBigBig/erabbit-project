@@ -53,8 +53,8 @@ export default {
     // 是否全选
     isCheckAll(state, getters) {
       return (
-        getters.validList.length === getters.selectedList &&
-        getters.selectedList.length !== 0
+        getters.selectedList.length &&
+        getters.validList.length === getters.selectedList.length
       );
     },
   },
@@ -154,6 +154,18 @@ export default {
         } else {
           //本地修改
           ctx.commit('updateCart', goods);
+          resolve();
+        }
+      });
+    },
+    checkAllCart(ctx, selected) {
+      return new Promise((resolve) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录 TODO
+        } else {
+          ctx.getters.validList.forEach((item) => {
+            ctx.commit('updateCart', { skuId: item.skuId, selected });
+          });
           resolve();
         }
       });
