@@ -52,10 +52,10 @@ export default {
     },
     // 是否全选
     isCheckAll(state, getters) {
-      return (
-        getters.selectedList.length &&
-        getters.validList.length === getters.selectedList.length
-      );
+      const result =
+        getters.selectedList.length > 0 &&
+        getters.validList.length === getters.selectedList.length;
+      return result;
     },
   },
   mutations: {
@@ -164,6 +164,19 @@ export default {
         } else {
           ctx.getters.validList.forEach((item) => {
             ctx.commit('updateCart', { skuId: item.skuId, selected });
+          });
+          resolve();
+        }
+      });
+    },
+    //批量删除选中商品
+    batchDeleteCart(ctx) {
+      return new Promise((resolve) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录 TODO
+        } else {
+          ctx.getters.selectedList.forEach((item) => {
+            ctx.commit('deleteCart', item.skuId);
           });
           resolve();
         }

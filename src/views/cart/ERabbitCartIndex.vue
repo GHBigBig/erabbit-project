@@ -36,6 +36,16 @@ const deleteOne = (skuId) => {
       // console.log('点击取消');
     });
 };
+
+const deleteBatch = () => {
+  Confirm({ text: '您确认从购物车中删除选中的商品吗？' })
+    .then(() => {
+      store.dispatch('cart/batchDeleteCart');
+    })
+    .catch(() => {
+      // console.log('取消删除');
+    });
+};
 </script>
 
 <template>
@@ -158,7 +168,7 @@ const deleteOne = (skuId) => {
           >
             全选
           </ERabbitCheckBox>
-          <a href="javascript:;">删除商品</a>
+          <a href="javascript:;" @click="deleteBatch">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
           <a href="javascript:;">清空失效商品</a>
         </div>
