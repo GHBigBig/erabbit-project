@@ -74,7 +74,6 @@ export default {
         console.log(state.list);
       }
       state.list.unshift(goods);
-      console.log(state.list);
     },
     //修改购物车商品
     updateCart(state, goods) {
