@@ -37,10 +37,12 @@ const deleteOne = (skuId) => {
     });
 };
 
-const deleteBatch = () => {
-  Confirm({ text: '您确认从购物车中删除选中的商品吗？' })
+const deleteBatch = (isClear) => {
+  Confirm({
+    text: `您确认从购物车中${isClear ? '失效' : '删除'}删除选中的商品吗？`,
+  })
     .then(() => {
-      store.dispatch('cart/batchDeleteCart');
+      store.dispatch('cart/batchDeleteCart', isClear);
     })
     .catch(() => {
       // console.log('取消删除');
@@ -168,9 +170,9 @@ const deleteBatch = () => {
           >
             全选
           </ERabbitCheckBox>
-          <a href="javascript:;" @click="deleteBatch">删除商品</a>
+          <a href="javascript:;" @click="deleteBatch(false)">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
-          <a href="javascript:;">清空失效商品</a>
+          <a href="javascript:;" @click="deleteBatch(true)">清空失效商品</a>
         </div>
         <div class="total">
           共{{ $store.getters['cart/validTotal'] }}件商品，已选择

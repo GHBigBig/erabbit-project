@@ -169,15 +169,17 @@ export default {
         }
       });
     },
-    //批量删除选中商品
-    batchDeleteCart(ctx) {
+    //批量删除选中商品或者清空无效商品
+    batchDeleteCart(ctx, isClear) {
       return new Promise((resolve) => {
         if (ctx.rootState.user.profile.token) {
           //登录 TODO
         } else {
-          ctx.getters.selectedList.forEach((item) => {
-            ctx.commit('deleteCart', item.skuId);
-          });
+          ctx.getters[isClear ? 'invalidList' : 'selectedList'].forEach(
+            (item) => {
+              ctx.commit('deleteCart', item.skuId);
+            }
+          );
           resolve();
         }
       });
