@@ -44,9 +44,19 @@ const findCommentListByGoods = async (id, reqParams) => {
   );
 };
 
+/**
+ * 根据 skuId 获取商品的 specs 和 skus
+ * @param {String} skuId 商品的 SKUID
+ * @returns Promise
+ */
+const getSpecsAndSkus = (skuId) => {
+  return request(`/goods/sku/${skuId}`, 'get');
+};
+
 export {
   findRelGoods,
   findHotGoods,
   findCommentInfoByGoods,
   findCommentListByGoods,
+  getSpecsAndSkus,
 };

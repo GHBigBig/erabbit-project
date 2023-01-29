@@ -1,7 +1,6 @@
 <script>
 export default {
   name: 'ERabbitCartIndex',
-  components: { ERabbitAppHearder, ERabbitAppFooter },
 };
 </script>
 <script setup>
@@ -10,6 +9,7 @@ import ERabbitAppHearder from '@/components/ERabbitAppHearder.vue';
 import { useStore } from 'vuex';
 import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue';
 import Confirm from '@/components/library/Confirm';
+import ERabbitCartSKU from './components/ERabbitCartSKU.vue';
 
 //阻止事件传播
 function f(e) {
@@ -51,6 +51,10 @@ const deleteBatch = (isClear) => {
 
 const changeCount = (skuId, count) => {
   store.dispatch('cart/updateCart', { skuId, count });
+};
+
+const updateCartSku = (oldSkuId, newSku) => {
+  store.dispatch('cart/updateCartSku', { oldSkuId, newSku });
 };
 </script>
 
@@ -103,7 +107,12 @@ const changeCount = (skuId, count) => {
                       {{ item.name }}
                     </p>
                     <!-- 选择规格组件 -->
-                    <p class="attr">{{ item.attrsText }}</p>
+                    <!-- <p class="attr">{{ item.attrsText }}</p> -->
+                    <ERabbitCartSKU
+                      :attrs-text="item.attrsText"
+                      :sku-id="item.skuId"
+                      @change="($event) => updateCartSku(item.skuId, $event)"
+                    ></ERabbitCartSKU>
                   </div>
                 </div>
               </td>
@@ -248,8 +257,9 @@ const changeCount = (skuId, count) => {
               height: 100px;
               width: 100px;
             }
-            div {
+            > div {
               margin-left: 10px;
+              text-align: left;
               .name {
                 width: 260px;
                 font-size: 16px;

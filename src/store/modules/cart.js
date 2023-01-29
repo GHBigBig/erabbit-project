@@ -184,5 +184,27 @@ export default {
         }
       });
     },
+    //修改 sku 规格参数
+    updateCartSku(ctx, { oldSkuId, newSku }) {
+      return new Promise((resolve) => {
+        if (ctx.rootState.user.profile.token) {
+          //登录 TODO
+        } else {
+          const oldGoods = ctx.state.list.find(
+            (item) => item.skuId === oldSkuId
+          );
+          ctx.commit('deleteCart', oldSkuId);
+          const {
+            skuId,
+            price: nowPrice,
+            inventory: stock,
+            specsText: attrsText,
+          } = newSku;
+          const newGoods = { ...oldGoods, skuId, nowPrice, stock, attrsText };
+          ctx.commit('insertCart', newGoods);
+          resolve();
+        }
+      });
+    },
   },
 };
