@@ -48,6 +48,10 @@ const deleteBatch = (isClear) => {
       // console.log('取消删除');
     });
 };
+
+const changeCount = (skuId, count) => {
+  store.dispatch('cart/updateCart', { skuId, count });
+};
 </script>
 
 <template>
@@ -111,7 +115,10 @@ const deleteBatch = (isClear) => {
                 </p>
               </td>
               <td width="180">
-                <ERabbitNumerBox :modelValue="item.count"></ERabbitNumerBox>
+                <ERabbitNumerBox
+                  :modelValue="item.count"
+                  @update:modelValue="changeCount(item.skuId, $event)"
+                ></ERabbitNumerBox>
               </td>
               <td width="180" class="price">
                 <p>&yen;{{ (item.nowPrice * 100 * item.count) / 100 }}</p>
