@@ -87,8 +87,11 @@ const send = async () => {
     if (0 === time.value) {
       time.value = 60;
       await userQQPatchCode(form.mobile);
-      Message({ type: 'success', text: '发送成功' });
-      resume();
+      //合并购物车操作
+      store.dispatch('cart/mergeLocalCart').then(() => {
+        Message({ type: 'success', text: '发送成功' });
+        resume();
+      });
     }
   } else {
     formCom.value.setFieldError('mobile', vaild);

@@ -41,8 +41,11 @@ if (QC.Login.check()) {
           token,
           mobile,
         });
-        Message({ type: 'success', text: 'QQ登录成功' });
-        router.push(store.state.user.redirectUrl);
+        //合并购物车操作
+        store.dispatch('cart/mergeLocalCart').then(() => {
+          Message({ type: 'success', text: 'QQ登录成功' });
+          router.push(store.state.user.redirectUrl);
+        });
       })
       .catch(() => {
         //失败原因 1. 没绑定小兔鲜帐号  2. 没有小兔鲜帐号

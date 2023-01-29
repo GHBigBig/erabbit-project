@@ -94,10 +94,13 @@ const submit = async () => {
         nickname,
         token,
       });
-      // 2. 成功提示
-      Message({ type: 'success', text: 'QQ绑定成功' });
-      // 3. 跳转到来源页或者首页
-      router.push(store.state.user.redirectUrl);
+      //合并购物车操作
+      store.dispatch('cart/mergeLocalCart').then(() => {
+        // 2. 成功提示
+        Message({ type: 'success', text: 'QQ绑定成功' });
+        // 3. 跳转到来源页或者首页
+        router.push(store.state.user.redirectUrl);
+      });
     });
   }
 };

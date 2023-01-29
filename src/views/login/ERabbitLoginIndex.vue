@@ -39,8 +39,11 @@ const accountLogin = ({ account, password }) => {
         token,
         mobile,
       });
-      Message({ type: 'success', text: '登录成功' });
-      router.push(route.query.redirectUrl ?? '/');
+      //合并购物车操作
+      store.dispatch('cart/mergeLocalCart').then(() => {
+        Message({ type: 'success', text: '登录成功' });
+        router.push(route.query.redirectUrl ?? '/');
+      });
     })
     .catch((e) => {
       Message({ type: 'error', text: e.response.data.message ?? '登陆失败' });
@@ -59,8 +62,11 @@ const mobileLogin = ({ mobile, code }) => {
         token,
         mobile,
       });
-      Message({ type: 'success', text: '登录成功' });
-      router.push(route.query.redirectUrl ?? '/');
+      //合并购物车操作
+      store.dispatch('cart/mergeLocalCart').then(() => {
+        Message({ type: 'success', text: '登录成功' });
+        router.push(route.query.redirectUrl ?? '/');
+      });
     })
     .catch((e) => {
       Message({ type: 'error', text: e.response.data.message ?? '登陆失败' });

@@ -1,7 +1,7 @@
 //购物车
 // 本地：id skuId name picture price nowPrice count attrsText selected stock isEffective
 
-import { getNewCartGoods } from '@/api/cart';
+import { getNewCartGoods, mergeLocalCart } from '@/api/cart';
 
 // 线上：比上面多 isCollect 有用 discount 无用 两项项信息
 export default {
@@ -93,6 +93,10 @@ export default {
     deleteCart(state, skuId) {
       const index = state.list.findIndex((item) => item.skuId == skuId);
       state.list.splice(index, 1);
+    },
+    //设置购物车列表
+    setCartList(state, list) {
+      state.list = list;
     },
   },
   actions: {
@@ -205,6 +209,18 @@ export default {
           resolve();
         }
       });
+    },
+    //合并本地购物车
+    async mergeLocalCart(ctx) {
+      //存储 token 后调用合并 API 接口函数进行购物合并
+      const cartList = ctx.getters.validList.map(
+        ({ skuId, selected, count }) => {
+          return { skuId, selected, count };
+        }
+      );
+      await mergeLocalCart(cartList);
+      //合并成功将本地购物车删除
+      ctx.commit('setCartList', []);
     },
   },
 };
