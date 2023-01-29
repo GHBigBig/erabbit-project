@@ -24,6 +24,10 @@ const checkOne = (skuId, selected) => {
 const checkAll = (selected) => {
   store.dispatch('cart/checkAllCart', selected);
 };
+
+const deleteOne = (skuId) => {
+  store.dispatch('cart/deleteCart', skuId);
+};
 </script>
 
 <template>
@@ -94,7 +98,11 @@ const checkAll = (selected) => {
               </td>
               <td width="140" class="operation">
                 <p><a href="javascript:;">移入收藏夹</a></p>
-                <p class="del"><a href="javascript:;">删除</a></p>
+                <p class="del">
+                  <a href="javascript:;" @click="deleteOne(item.skuId)">
+                    删除
+                  </a>
+                </p>
                 <p><a href="javascript:;">找相似</a></p>
               </td>
             </tr>
