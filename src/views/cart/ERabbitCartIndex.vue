@@ -9,6 +9,7 @@ import ERabbitAppFooter from '@/components/ERabbitAppFooter.vue';
 import ERabbitAppHearder from '@/components/ERabbitAppHearder.vue';
 import { useStore } from 'vuex';
 import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue';
+import Confirm from '@/components/library/Confirm';
 
 //阻止事件传播
 function f(e) {
@@ -26,7 +27,14 @@ const checkAll = (selected) => {
 };
 
 const deleteOne = (skuId) => {
-  store.dispatch('cart/deleteCart', skuId);
+  Confirm({ text: '您确认从购物车删除该商品吗？' })
+    .then(() => {
+      // console.log('点击确认');
+      store.dispatch('cart/deleteCart', skuId);
+    })
+    .catch(() => {
+      // console.log('点击取消');
+    });
 };
 </script>
 

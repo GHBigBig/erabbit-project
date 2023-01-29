@@ -2,6 +2,7 @@ const modules = import.meta.glob('./*.vue'); //从文件系统导入多个模块
 
 import defaultImg from '@/assets/images/200.png';
 import Message from './Message';
+import Confirm from './Confirm';
 
 export default {
   install(app) {
@@ -32,5 +33,6 @@ export default {
     });
 
     app.config.globalProperties.$message = Message; //原型函数
+    app.config.globalProperties.$confirm = Confirm;
   },
 };
