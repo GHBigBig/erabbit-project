@@ -32,4 +32,19 @@ const insertCart = ({ skuId, count }) => {
   return request('/member/cart', 'post', { skuId, count });
 };
 
-export { getNewCartGoods, mergeLocalCart, findCartList, insertCart };
+/**
+ * 删除 数组 ids 对应的商品
+ * @param {Array<String>} ids skuId 集合
+ * @returns Promise
+ */
+const deleteCart = (ids) => {
+  return request('/member/cart', 'delete', { ids });
+};
+
+export {
+  getNewCartGoods,
+  mergeLocalCart,
+  findCartList,
+  insertCart,
+  deleteCart,
+};
