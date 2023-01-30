@@ -248,6 +248,21 @@ export default {
       return new Promise((resolve) => {
         if (ctx.rootState.user.profile.token) {
           //登录 TODO
+          //没有修改规格的接口，通过删旧商品，插入新商品
+          const oldGoods = ctx.state.list.find(
+            (item) => item.skuId === oldSkuId
+          );
+          deleteCart([oldSkuId])
+            .then(() => {
+              return insertCart({ skuId: newSku.skuId, count: oldGoods.count });
+            })
+            .then(() => {
+              return findCartList();
+            })
+            .then((data) => {
+              ctx.commit('setCartList', data.result);
+              resolve();
+            });
         } else {
           const oldGoods = ctx.state.list.find(
             (item) => item.skuId === oldSkuId
