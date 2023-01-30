@@ -203,6 +203,17 @@ export default {
       return new Promise((resolve) => {
         if (ctx.rootState.user.profile.token) {
           //登录 TODO
+          const ids = ctx.getters[isClear ? 'invalidList' : 'selectedList'].map(
+            (item) => item.skuId
+          );
+          deleteCart(ids)
+            .then(() => {
+              return findCartList();
+            })
+            .then((data) => {
+              ctx.commit('setCartList', data.result);
+              resolve();
+            });
         } else {
           ctx.getters[isClear ? 'invalidList' : 'selectedList'].forEach(
             (item) => {

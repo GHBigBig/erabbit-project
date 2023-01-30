@@ -10,6 +10,7 @@ import { useStore } from 'vuex';
 import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue';
 import Confirm from '@/components/library/Confirm';
 import ERabbitCartSKU from './components/ERabbitCartSKU.vue';
+import Message from '@/components/library/Message';
 
 //阻止事件传播
 function f(e) {
@@ -38,6 +39,10 @@ const deleteOne = (skuId) => {
 };
 
 const deleteBatch = (isClear) => {
+  if (store.getters['cart/selectedList']?.length <= 0) {
+    Message({ type: 'error', text: '请勾选有效商品项！' });
+    return;
+  }
   Confirm({
     text: `您确认从购物车中${isClear ? '失效' : '删除'}删除选中的商品吗？`,
   })
