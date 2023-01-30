@@ -11,6 +11,7 @@ import ERabbitGoodsRecommend from '../goods/components/ERabbitGoodsRecommend.vue
 import Confirm from '@/components/library/Confirm';
 import ERabbitCartSKU from './components/ERabbitCartSKU.vue';
 import Message from '@/components/library/Message';
+import router from '@/router';
 
 //阻止事件传播
 function f(e) {
@@ -60,6 +61,24 @@ const changeCount = (skuId, count) => {
 
 const updateCartSku = (oldSkuId, newSku) => {
   store.dispatch('cart/updateCartSku', { oldSkuId, newSku });
+};
+
+const goCheckout = () => {
+  //至少选中一件商品
+  if (store.getters['cart/selectedTotal'] === 0) {
+    return Message({ text: '至少选中一件商品才能结算' });
+  }
+  //判断是否登录，
+  if (!store.state.user.profile.token) {
+    Confirm({ text: '您还未登录，您是否去登录？' })
+      .then(() => {
+        //点击确认
+        router.push('/login');
+      })
+      .catch(() => {});
+  } else {
+    router.push('/member/checkout');
+  }
 };
 </script>
 
@@ -200,7 +219,9 @@ const updateCartSku = (oldSkuId, newSku) => {
           共{{ $store.getters['cart/validTotal'] }}件商品，已选择
           {{ $store.getters['cart/selectedTotal'] }}件，商品合计：
           <span>&yen;{{ $store.getters['cart/selectedAmount'] }} </span>
-          <ERabbitButton type="primary"> 下单结算 </ERabbitButton>
+          <ERabbitButton type="primary" @click="goCheckout">
+            下单结算
+          </ERabbitButton>
         </div>
       </div>
       <ERabbitGoodsRecommend></ERabbitGoodsRecommend>
