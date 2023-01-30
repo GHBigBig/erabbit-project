@@ -22,4 +22,14 @@ const findCartList = () => {
   return request('/member/cart', 'get');
 };
 
-export { getNewCartGoods, mergeLocalCart, findCartList };
+/**
+ * 加入购物车
+ * @param {String} skuId 商品 SKUID
+ * @param {Number} count 商品数量
+ * @returns Promise
+ */
+const insertCart = ({ skuId, count }) => {
+  return request('/member/cart', 'post', { skuId, count });
+};
+
+export { getNewCartGoods, mergeLocalCart, findCartList, insertCart };

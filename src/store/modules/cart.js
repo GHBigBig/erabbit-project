@@ -1,7 +1,12 @@
 //购物车
 // 本地：id skuId name picture price nowPrice count attrsText selected stock isEffective
 
-import { getNewCartGoods, mergeLocalCart, findCartList } from '@/api/cart';
+import {
+  getNewCartGoods,
+  mergeLocalCart,
+  findCartList,
+  insertCart,
+} from '@/api/cart';
 
 // 线上：比上面多 isCollect 有用 discount 无用 两项项信息
 export default {
@@ -103,9 +108,16 @@ export default {
     //执行异步操作
     insertCart(ctx, goods) {
       return new Promise((resolve) => {
-        if (ctx.rootState.user.token) {
-          //已登录
-          console.log('已登录 添加购物车~');
+        if (ctx.rootState.user.profile.token) {
+          //已登录 console.log('已登录 添加购物车~');
+          insertCart(goods)
+            .then(() => {
+              return findCartList();
+            })
+            .then((data) => {
+              ctx.commit('setCartList', data.result);
+              resolve;
+            });
         } else {
           //未登录
           ctx.commit('insertCart', goods);
