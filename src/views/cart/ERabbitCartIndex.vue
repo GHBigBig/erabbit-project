@@ -188,6 +188,7 @@ const updateCartSku = (oldSkuId, newSku) => {
           <ERabbitCheckBox
             type="primary"
             :modelValue="$store.getters['cart/isCheckAll']"
+            @update:modelValue="checkAll"
           >
             全选
           </ERabbitCheckBox>

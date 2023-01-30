@@ -53,6 +53,17 @@ const updateCart = (goods) => {
   return request(`/member/cart/${goods.skuId}`, 'put', goods);
 };
 
+/**
+ * 全选反选
+ * @param {Object} param0
+ * @param {Boolean} param0.selected 选中状态
+ * @param {Array<String>} param0.ids 有效商品 skuId 集合
+ * @returns Promise
+ */
+const checkAllCart = ({ selected, ids }) => {
+  return request('/member/cart/selected', 'put', { selected, ids });
+};
+
 export {
   getNewCartGoods,
   mergeLocalCart,
@@ -60,4 +71,5 @@ export {
   insertCart,
   deleteCart,
   updateCart,
+  checkAllCart,
 };

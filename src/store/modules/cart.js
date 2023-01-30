@@ -8,6 +8,7 @@ import {
   insertCart,
   deleteCart,
   updateCart,
+  checkAllCart,
 } from '@/api/cart';
 
 // 线上：比上面多 isCollect 有用 discount 无用 两项项信息
@@ -199,6 +200,15 @@ export default {
       return new Promise((resolve) => {
         if (ctx.rootState.user.profile.token) {
           //登录 TODO
+          const ids = ctx.getters.validList.map((item) => item.skuId);
+          checkAllCart({ selected, ids })
+            .then(() => {
+              return findCartList();
+            })
+            .then((data) => {
+              ctx.commit('setCartList', data.result);
+              resolve();
+            });
         } else {
           ctx.getters.validList.forEach((item) => {
             ctx.commit('updateCart', { skuId: item.skuId, selected });
