@@ -1,7 +1,7 @@
 //购物车
 // 本地：id skuId name picture price nowPrice count attrsText selected stock isEffective
 
-import { getNewCartGoods, mergeLocalCart } from '@/api/cart';
+import { getNewCartGoods, mergeLocalCart, findCartList } from '@/api/cart';
 
 // 线上：比上面多 isCollect 有用 discount 无用 两项项信息
 export default {
@@ -118,6 +118,10 @@ export default {
       return new Promise((resolve, reject) => {
         if (ctx.rootState.user.profile.token) {
           //登录 TODO
+          findCartList().then((data) => {
+            ctx.commit('setCartList', data.result);
+            resolve();
+          });
         } else {
           const promiseArr = ctx.state.list.map((item) =>
             getNewCartGoods(item.skuId)

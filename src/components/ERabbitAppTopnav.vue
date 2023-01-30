@@ -11,6 +11,8 @@ const profile = computed(() => {
 const router = useRouter();
 
 const logout = () => {
+  //清空购物车
+  store.commit('cart/setCartList', []);
   store.commit('user/setUser', {});
   router.push('/login');
 };

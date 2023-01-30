@@ -14,4 +14,12 @@ const mergeLocalCart = (cartList) => {
   return request('/member/cart/merge', 'post', cartList);
 };
 
-export { getNewCartGoods, mergeLocalCart };
+/**
+ * 获取购物车的商品列表
+ * @returns Promise
+ */
+const findCartList = () => {
+  return request('/member/cart', 'get');
+};
+
+export { getNewCartGoods, mergeLocalCart, findCartList };
