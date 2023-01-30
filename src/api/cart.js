@@ -41,10 +41,23 @@ const deleteCart = (ids) => {
   return request('/member/cart', 'delete', { ids });
 };
 
+/**
+ * 修改购物车商品的状态和数据量
+ * @param {Object} goods 商品
+ * @param {String} goods.skuId 商品 skuId
+ * @param {Boolean} goods.selected 选中状态
+ * @param {Integer} goods.count 商品数量
+ * @returns Promise
+ */
+const updateCart = (goods) => {
+  return request(`/member/cart/${goods.skuId}`, 'put', goods);
+};
+
 export {
   getNewCartGoods,
   mergeLocalCart,
   findCartList,
   insertCart,
   deleteCart,
+  updateCart,
 };
