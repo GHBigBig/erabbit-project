@@ -5,6 +5,14 @@ export default {
 </script>
 <script setup>
 import ERabbitCheckoutAddress from './components/ERabbitCheckAddress.vue';
+import { findCheckoutInfo } from '@/api/order';
+import { ref } from 'vue';
+
+//获取结算信息
+const checkoutInfo = ref(null);
+findCheckoutInfo().then((data) => {
+  checkoutInfo.value = data.result;
+});
 </script>
 <template>
   <div class="er-pay-checkout-page">
@@ -14,11 +22,12 @@ import ERabbitCheckoutAddress from './components/ERabbitCheckAddress.vue';
         <ERabbitBreadItem to="/cart">购物车</ERabbitBreadItem>
         <ERabbitBreadItem>填写订单</ERabbitBreadItem>
       </ERabbitBread>
-      <div class="wrapper">
+      <div class="wrapper" v-if="checkoutInfo">
         <!-- 收货地址 -->
         <h3 class="box-title">收货地址</h3>
         <div class="box-body">
-          <ERabbitCheckoutAddress></ERabbitCheckoutAddress>
+          <ERabbitCheckoutAddress :list="checkoutInfo.userAddresses">
+          </ERabbitCheckoutAddress>
         </div>
 
         <!-- 商品信息 -->
@@ -36,23 +45,20 @@ import ERabbitCheckoutAddress from './components/ERabbitCheckAddress.vue';
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="item in checkoutInfo.goods" :key="item.id">
                   <td>
                     <RouterLink to="" class="info">
-                      <img
-                        src="https://yanxuan-item.nosdn.127.net/5b3c61cf75a2480774616f5662a5bccf.jpg"
-                        alt="商品图片"
-                      />
+                      <img :src="item.picture" alt="商品图片" />
                       <div class="desc">
-                        <p>精酿经典啤酒杯可乐杯气泡水杯两支装</p>
-                        <p>规格:意大利精酿酒杯两支</p>
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.attrsText }}</p>
                       </div>
                     </RouterLink>
                   </td>
-                  <td>&yen;99.00</td>
-                  <td>1</td>
-                  <td>&yen;99.00</td>
-                  <td>&yen;99.00</td>
+                  <td>&yen;{{ item.payPrice }}</td>
+                  <td>{{ item.count }}</td>
+                  <td>&yen;{{ item.totalPrice }}</td>
+                  <td>&yen;{{ item.totalPayPrice }}</td>
                 </tr>
               </tbody>
             </table>
@@ -85,19 +91,21 @@ import ERabbitCheckoutAddress from './components/ERabbitCheckAddress.vue';
           <div class="total">
             <dl>
               <dt>商品件数：</dt>
-              <dd>1件</dd>
+              <dd>{{ checkoutInfo.summary.goodsCount }}件</dd>
             </dl>
             <dl>
               <dt>商品总价：</dt>
-              <dd>&yen;99.00</dd>
+              <dd>&yen;{{ checkoutInfo.summary.totalPrice }}</dd>
             </dl>
             <dl>
               <dt>商品运费：</dt>
-              <dd>&yen;5.00</dd>
+              <dd>&yen;{{ checkoutInfo.summary.postFee }}</dd>
             </dl>
             <dl>
               <dt>应付总额：</dt>
-              <dd class="total-price">&yen;104.00</dd>
+              <dd class="total-price">
+                &yen;{{ checkoutInfo.summary.totalPayPrice }}
+              </dd>
             </dl>
           </div>
         </div>
