@@ -33,6 +33,11 @@ const routes = [
     name: 'cart',
     component: () => import('@/views/cart/ERabbitCartIndex.vue'),
   },
+  {
+    path: '/member/checkout',
+    name: 'checkout',
+    component: () => import('@/views/member/pay/ERabbitCheckout.vue'),
+  },
 ];
 
 const router = createRouter({
