@@ -22,6 +22,9 @@ if (props.list.length > 0) {
     showAddress.value = computed(() => props.list[0]);
   }
 }
+
+//控制收获地址地址切换框显示与否
+const dialogVisible = ref(false);
 </script>
 <template>
   <div class="er-checkout-address">
@@ -40,11 +43,30 @@ if (props.list.length > 0) {
       <a href="javascript:;">修改地址</a>
     </div>
     <div class="action">
-      <ERabbitButton class="btn" style="margin-right: 10px">
-        修改地址
+      <ERabbitButton
+        class="btn"
+        style="margin-right: 10px"
+        @click="dialogVisible = true"
+      >
+        切换地址
       </ERabbitButton>
       <ERabbitButton class="btn">添加地址</ERabbitButton>
     </div>
+    <ERabbitDialog v-model:visible="dialogVisible">
+      对话框内容
+      <template #footer>
+        <ERabbitButton
+          @click="dialogVisible = false"
+          style="margin-right: 20px"
+          type="gray"
+        >
+          取消
+        </ERabbitButton>
+        <ERabbitButton @click="dialogVisible = false" type="primary">
+          确认
+        </ERabbitButton>
+      </template>
+    </ERabbitDialog>
   </div>
 </template>
 <style scoped lang="less">
