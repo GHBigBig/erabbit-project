@@ -53,7 +53,13 @@ const dialogVisible = ref(false);
       <ERabbitButton class="btn">添加地址</ERabbitButton>
     </div>
     <ERabbitDialog v-model:visible="dialogVisible">
-      对话框内容
+      <ul v-for="item in props.list" :key="item.id">
+        <li>收货人：{{ item.receiver }}</li>
+        <li>联系方式：{{ item.contact }}</li>
+        <li>
+          收货地址：{{ item.fullLocation.replace(/ /g, '') + item.address }}
+        </li>
+      </ul>
       <template #footer>
         <ERabbitButton
           @click="dialogVisible = false"
@@ -112,6 +118,21 @@ const dialogVisible = ref(false);
       width: 140px;
       height: 46px;
       font-size: 14px;
+    }
+  }
+}
+
+.er-dialog {
+  .body {
+    padding: 20px 40px;
+    ul {
+      padding: 10px;
+      border: 1px solid #f5f5f5;
+      margin-bottom: 10px;
+      li {
+        height: 30px;
+        line-height: 30px;
+      }
     }
   }
 }
