@@ -52,16 +52,6 @@ const close = () => {
         ></a>
       </div>
       <div class="body">
-        <!-- <ul>
-          <li>对话框内容</li>
-          <li>对话框内容</li>
-          <li>对话框内容</li>
-        </ul>
-        <ul>
-          <li>对话框内容</li>
-          <li>对话框内容</li>
-          <li>对话框内容</li>
-        </ul> -->
         <slot></slot>
       </div>
       <div class="footer">
@@ -118,6 +108,8 @@ const close = () => {
 
     .body {
       padding: 20px 40px;
+      max-height: 400px;
+      overflow-y: scroll;
       ul {
         padding: 10px;
         border: 1px solid #f5f5f5;
