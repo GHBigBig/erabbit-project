@@ -13,6 +13,10 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
+  placeholder: {
+    type: String,
+    default: '请选择配送地区',
+  },
 });
 const emits = defineEmits(['update:address']);
 
@@ -96,8 +100,8 @@ const checkAddress = (location) => {
 <template>
   <div class="er-city" ref="optionDiv">
     <div class="select" @click="toggleState()">
-      <span v-if="!addressResult.fullLocation" class="placeholder">
-        请选择配送地址
+      <span v-if="!addressResult?.fullLocation" class="placeholder">
+        {{ props.placeholder }}
       </span>
       <span v-else class="value">{{ addressResult.fullLocation }}</span>
       <i class="iconfont icon-angle-down"></i>

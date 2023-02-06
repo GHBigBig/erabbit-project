@@ -5,6 +5,7 @@ export default {
 </script>
 <script setup>
 import { computed, ref } from 'vue';
+import ERabbitAddressEdit from './ERabbitAddressEdit.vue';
 
 const props = defineProps({
   list: {
@@ -13,6 +14,7 @@ const props = defineProps({
   },
 });
 
+//显示地址，首选显示默认地址
 const showAddress = ref(null);
 if (props.list.length > 0) {
   const defaultAddress = props.list.find((item) => item.isDefault === 1);
@@ -25,6 +27,12 @@ if (props.list.length > 0) {
 
 //控制收获地址地址切换框显示与否
 const dialogVisible = ref(false);
+
+// 添加收货地址
+const addressEdit = ref(null);
+const openAddressEdit = () => {
+  addressEdit.value.open();
+};
 </script>
 <template>
   <div class="er-checkout-address">
@@ -50,7 +58,9 @@ const dialogVisible = ref(false);
       >
         切换地址
       </ERabbitButton>
-      <ERabbitButton class="btn">添加地址</ERabbitButton>
+      <ERabbitButton class="btn" @click="openAddressEdit">
+        添加地址
+      </ERabbitButton>
     </div>
     <ERabbitDialog v-model:visible="dialogVisible">
       <ul v-for="item in props.list" :key="item.id">
@@ -73,6 +83,7 @@ const dialogVisible = ref(false);
         </ERabbitButton>
       </template>
     </ERabbitDialog>
+    <ERabbitAddressEdit></ERabbitAddressEdit>
   </div>
 </template>
 <style scoped lang="less">

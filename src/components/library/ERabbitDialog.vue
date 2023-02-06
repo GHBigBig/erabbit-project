@@ -109,7 +109,7 @@ const close = () => {
     .body {
       padding: 20px 40px;
       max-height: 400px;
-      overflow-y: scroll;
+      overflow-y: auto;
       ul {
         padding: 10px;
         border: 1px solid #f5f5f5;
